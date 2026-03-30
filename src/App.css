@@ -1,6 +1,5 @@
 .page-shell {
   position: relative;
-  overflow: hidden;
 }
 
 .page-shell::before,
@@ -34,8 +33,11 @@
   justify-content: space-between;
   gap: 24px;
   padding: 24px 0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1200px, calc(100% - 40px));
   z-index: 20;
   backdrop-filter: blur(18px);
   background: rgba(5, 10, 20, 0.58);

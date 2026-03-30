@@ -18,14 +18,14 @@ describe('CardStack', () => {
 
   it('shows first card code by default', () => {
     const { container } = render(<CardStack cards={cards} />)
-    const preview = container.querySelector('.card-preview')
-    expect(preview?.textContent).toContain('L1')
+    const editor = container.querySelector('.editor-wrap')
+    expect(editor?.textContent).toContain('L1')
   })
 
-  it('switches code on card click', () => {
+  it('switches code when clicking a back card', () => {
     const { getByText, container } = render(<CardStack cards={cards} />)
     fireEvent.click(getByText('Skill Description'))
-    const preview = container.querySelector('.card-preview')
-    expect(preview?.textContent).toContain('L2')
+    const editor = container.querySelector('.editor-wrap')
+    expect(editor?.textContent).toContain('L2')
   })
 })

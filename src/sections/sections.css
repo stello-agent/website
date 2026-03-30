@@ -2,7 +2,8 @@
 
 /* ── Hero ───────────────────────────── */
 .hero-section {
-  min-height: 100svh;
+  height: 100svh;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -56,9 +57,37 @@
   margin: 0;
 }
 
+.hero-h1-line1 {
+  display: block;
+  animation: hero-line1-in 300ms ease both;
+}
+
+@keyframes hero-line1-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 .hero-h1-accent {
   color: var(--accent-purple);
   display: block;
+}
+
+/* Typewriter cursor */
+.hero-cursor {
+  display: inline-block;
+  font-weight: 300;
+  color: var(--accent-purple);
+  opacity: 1;
+  margin-left: 2px;
+}
+
+.hero-cursor--blink {
+  animation: hero-cursor-blink 0.75s ease-in-out infinite;
+}
+
+@keyframes hero-cursor-blink {
+  0%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
 }
 
 .hero-desc {
@@ -80,11 +109,14 @@
 /* ── DAG Section ──────────────────────────────── */
 
 .dag-section {
+  height: 100svh;
+  scroll-snap-align: start;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: center;
-  padding: 140px 0;
+  padding: 100px 0 60px;
 }
 
 .dag-text {
@@ -132,10 +164,13 @@
 /* ── Memory Section ───────────────────────────── */
 
 .memory-section {
+  height: 100svh;
+  scroll-snap-align: start;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 48px;
-  padding: 140px 0;
+  gap: 28px;
+  padding: 100px 0 48px;
 }
 
 .memory-header {
@@ -153,8 +188,12 @@
 /* ── CTA Section ──────────────────────────────── */
 
 .cta-section {
-  padding: 140px 0 100px;
+  height: 100svh;
+  scroll-snap-align: start;
+  overflow: hidden;
+  padding: 0;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 

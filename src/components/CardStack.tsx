@@ -16,28 +16,64 @@ interface Props {
   cards: MemoryCard[]
 }
 
-// CardStack 渲染可交互的内存层卡片堆叠
+// CardStack 渲染三层记忆卡片堆叠 + Monaco 风格编辑器
 export function CardStack({ cards }: Props) {
-  const [active, setActive] = useState(0)
+  const [order, setOrder] = useState([0, 1, 2])
+
+  const bringToFront = (pos: number) => {
+    if (pos === 0) return
+    setOrder(prev => {
+      const next = [...prev]
+      const [picked] = next.splice(pos, 1)
+      return [picked, ...next]
+    })
+  }
+
+  const frontCard = cards[order[0]]
+  const snippet = CODE_SNIPPETS[frontCard.snippetKey]
 
   return (
-    <div className="card-stack">
-      <div className="card-list">
-        {cards.map((card, i) => (
-          <button
-            key={card.tag}
-            className={`card-item ${active === i ? 'card-item--active' : ''}`}
-            onClick={() => setActive(i)}
-            style={{ '--card-color': card.color } as React.CSSProperties}
-          >
-            <span className="card-tag">{card.tag}</span>
-            <span className="card-name">{card.name}</span>
-            <span className="card-desc">{card.desc}</span>
-          </button>
-        ))}
+    <div className="memory-layout">
+      {/* Left: card deck */}
+      <div className="deck-area">
+        <div className="deck-wrap">
+          {order.map((cardIdx, pos) => {
+            const card = cards[cardIdx]
+            return (
+              <div
+                key={card.tag}
+                className={`deck-card deck-card--${pos}`}
+                onClick={() => bringToFront(pos)}
+                style={{ '--card-color': card.color } as React.CSSProperties}
+              >
+                <div className="deck-card-glow" />
+                <div className="deck-card-inner">
+                  <span className="deck-tag">{card.tag}</span>
+                  <span className="deck-name">{card.name}</span>
+                  <span className="deck-desc">{card.desc}</span>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <div className="deck-pips">
+          {cards.map((card, i) => (
+            <span
+              key={card.tag}
+              className={`deck-pip${order[0] === i ? ' deck-pip--active' : ''}`}
+              style={{ '--card-color': card.color } as React.CSSProperties}
+            />
+          ))}
+        </div>
       </div>
-      <div className="card-preview">
-        <CodeEditor code={CODE_SNIPPETS[cards[active].snippetKey]} />
+
+      {/* Right: Monaco-style editor */}
+      <div className="editor-wrap">
+        <CodeEditor
+          code={snippet.code}
+          filename={snippet.filename}
+          accentColor={frontCard.color}
+        />
       </div>
     </div>
   )
