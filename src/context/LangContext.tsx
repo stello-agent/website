@@ -12,7 +12,7 @@ const LangContext = createContext<LangCtx | null>(null)
 
 // LangProvider 包裹整个应用，提供语言状态。
 export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Lang>('en')
+  const [lang, setLang] = useState<Lang>('zh')
   const toggle = () => setLang((l) => (l === 'en' ? 'zh' : 'en'))
   return <LangContext.Provider value={{ lang, toggle }}>{children}</LangContext.Provider>
 }

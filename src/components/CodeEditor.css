@@ -6,10 +6,18 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
-  background: #0d1117;
+  background: #fafbfc;
   height: 100%;
   position: relative;
   transition: border-color 400ms ease, box-shadow 400ms ease;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent, #2266ee) 10%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 0 60px color-mix(in srgb, var(--accent, #2266ee) 6%, transparent);
+}
+
+:root[data-theme="dark"] .monaco-wrap {
+  background: #0d1117;
   box-shadow:
     0 0 0 1px color-mix(in srgb, var(--accent, #4488ff) 10%, transparent),
     0 20px 60px rgba(0, 0, 0, 0.55),
@@ -44,10 +52,15 @@
   align-items: center;
   height: 38px;
   padding: 0 14px;
-  background: #161b22;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: #eef0f5;
+  border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
   gap: 14px;
+}
+
+:root[data-theme="dark"] .monaco-titlebar {
+  background: #161b22;
+  border-bottom-color: rgba(255, 255, 255, 0.05);
 }
 
 .monaco-dots {
@@ -85,8 +98,14 @@
 }
 
 .monaco-tab--active {
-  background: #0d1117;
+  background: #fafbfc;
   color: var(--text-muted);
+  border-color: var(--border-subtle);
+  border-bottom-color: #fafbfc;
+}
+
+:root[data-theme="dark"] .monaco-tab--active {
+  background: #0d1117;
   border-color: rgba(255, 255, 255, 0.06);
   border-bottom-color: #0d1117;
 }
@@ -106,18 +125,26 @@
   align-items: flex-end;
   padding: 14px 10px 14px 14px;
   background: transparent;
-  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
   flex-shrink: 0;
   user-select: none;
+}
+
+:root[data-theme="dark"] .monaco-gutter {
+  border-right-color: rgba(255, 255, 255, 0.04);
 }
 
 .monaco-ln {
   font-family: var(--font-mono);
   font-size: 0.76rem;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.16);
+  color: rgba(0, 0, 0, 0.25);
   min-width: 1.5ch;
   text-align: right;
+}
+
+:root[data-theme="dark"] .monaco-ln {
+  color: rgba(255, 255, 255, 0.16);
 }
 
 .monaco-code {
@@ -129,6 +156,10 @@
   white-space: pre;
   overflow-x: auto;
   flex: 1;
+  color: #383a42;
+}
+
+:root[data-theme="dark"] .monaco-code {
   color: #abb2bf;
 }
 
@@ -138,13 +169,37 @@
 
 /* ── Syntax tokens ─────────────────────── */
 
-.ce-comment  { color: #546e7a; font-style: italic; }
-.ce-string   { color: #ce9178; }
-.ce-number   { color: #b5cea8; }
-.ce-key      { color: #9cdcfe; }
-.ce-keyword  { color: #c792ea; }
-.ce-punct    { color: #89ddff; }
-.ce-plain    { color: #abb2bf; }
+.ce-comment  { color: #9ea1a7; font-style: italic; }
+.ce-string   { color: #50a14f; }
+.ce-number   { color: #986801; }
+.ce-key      { color: #4078f2; }
+.ce-keyword  { color: #a626a4; }
+.ce-punct    { color: #0184bc; }
+.ce-plain    { color: #383a42; }
+
+:root[data-theme="dark"] .ce-comment  { color: #546e7a; }
+:root[data-theme="dark"] .ce-string   { color: #ce9178; }
+:root[data-theme="dark"] .ce-number   { color: #b5cea8; }
+:root[data-theme="dark"] .ce-key      { color: #9cdcfe; }
+:root[data-theme="dark"] .ce-keyword  { color: #c792ea; }
+:root[data-theme="dark"] .ce-punct    { color: #89ddff; }
+:root[data-theme="dark"] .ce-plain    { color: #abb2bf; }
+
+/* ── Markdown tokens ───────────────────── */
+
+.ce-md-h      { color: #0d1525; font-weight: 700; }
+.ce-md-bold   { color: #8844dd; font-weight: 600; }
+.ce-md-code   { color: #50a14f; background: rgba(0,0,0,0.06); border-radius: 3px; padding: 0 3px; }
+.ce-md-list   { color: #2266ee; font-weight: 600; }
+.ce-md-link   { color: #109980; }
+.ce-md-muted  { color: #a0a1a7; }
+
+:root[data-theme="dark"] .ce-md-h      { color: #e8f0ff; }
+:root[data-theme="dark"] .ce-md-bold   { color: #c792ea; }
+:root[data-theme="dark"] .ce-md-code   { color: #ce9178; background: rgba(255,255,255,0.06); }
+:root[data-theme="dark"] .ce-md-list   { color: #4488ff; }
+:root[data-theme="dark"] .ce-md-link   { color: #22ccbb; }
+:root[data-theme="dark"] .ce-md-muted  { color: #546e7a; }
 
 /* ── Blinking cursor ───────────────────── */
 
@@ -172,14 +227,24 @@
   justify-content: space-between;
   height: 22px;
   padding: 0 14px;
-  background: color-mix(in srgb, var(--accent, #4488ff) 70%, #1a1d2e);
+  background: color-mix(in srgb, var(--accent, #2266ee) 20%, #dce6f8);
   flex-shrink: 0;
+}
+
+:root[data-theme="dark"] .monaco-statusbar {
+  background: color-mix(in srgb, var(--accent, #4488ff) 70%, #1a1d2e);
 }
 
 .monaco-status-lang,
 .monaco-status-lines {
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(0, 0, 0, 0.55);
   letter-spacing: 0.02em;
 }
+
+:root[data-theme="dark"] .monaco-status-lang,
+:root[data-theme="dark"] .monaco-status-lines {
+  color: rgba(255, 255, 255, 0.75);
+}
+
