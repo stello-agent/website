@@ -2,6 +2,7 @@
 import { LangProvider } from './context/LangContext'
 import { useLang } from './hooks/useLang'
 import { strings } from './data/i18n'
+import { HeroSection } from './sections/HeroSection'
 import './index.css'
 import './App.css'
 
@@ -45,7 +46,7 @@ function AppInner() {
     <div className="page-shell">
       <Nav />
       <main>
-        {/* Sections will be added in Tasks 4-7 */}
+        <HeroSection />
       </main>
     </div>
   )

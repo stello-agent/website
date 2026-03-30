@@ -1,0 +1,78 @@
+/* src/sections/sections.css */
+
+/* ── Hero ───────────────────────────── */
+.hero-section {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 40% 30%, rgba(68, 136, 255, 0.14), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(204, 136, 255, 0.10), transparent 36%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(68, 136, 255, 0.28);
+  background: rgba(10, 20, 40, 0.8);
+  color: #7aadff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #4488ff;
+}
+
+.hero-h1 {
+  font-size: clamp(3.6rem, 9vw, 7.2rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+  margin: 0;
+}
+
+.hero-h1-accent {
+  color: var(--accent-purple);
+  display: block;
+}
+
+.hero-desc {
+  max-width: 42ch;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  line-height: 1.75;
+  white-space: pre-line;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
