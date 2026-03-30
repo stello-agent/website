@@ -1,0 +1,103 @@
+:root {
+  --bg: #050914;
+  --bg-elevated: #0b1222;
+  --text-strong: #f5f7ff;
+  --text-muted: #b1bdd9;
+  --text-faint: #7985a4;
+  --accent: #9cabff;
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --font-sans:
+    'Manrope', 'Avenir Next', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial,
+    sans-serif;
+  --font-display:
+    'Sora', 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+
+  color: var(--text-muted);
+  background: var(--bg);
+  font: 16px/1.6 var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top, rgba(16, 32, 69, 0.55), transparent 26%),
+    linear-gradient(180deg, #060a14 0%, #04070f 100%);
+}
+
+body,
+a,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  border: 0;
+}
+
+#root {
+  width: min(1200px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+main {
+  display: block;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--text-strong);
+  font-family: var(--font-display);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+h1 {
+  font-size: clamp(3.3rem, 8vw, 6.2rem);
+}
+
+h2 {
+  font-size: clamp(2.1rem, 4.6vw, 3.4rem);
+}
+
+h3 {
+  font-size: 1.1rem;
+}
+
+p {
+  color: var(--text-muted);
+}
+
+@media (max-width: 720px) {
+  #root {
+    width: min(100% - 24px, 1200px);
+  }
+}
