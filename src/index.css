@@ -1,25 +1,22 @@
 :root {
-  --bg: #050914;
-  --bg-elevated: #0b1222;
-  --text-strong: #f5f7ff;
-  --text-muted: #b1bdd9;
-  --text-faint: #7985a4;
-  --accent: #9cabff;
-  --border-subtle: rgba(255, 255, 255, 0.09);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --font-sans:
-    'Manrope', 'Avenir Next', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial,
-    sans-serif;
-  --font-display:
-    'Sora', 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif;
+  --bg: #06080f;
+  --bg-elevated: #0c1228;
+  --bg-card: #080b18;
+  --text-strong: #e8f0ff;
+  --text-muted: #7a8fa8;
+  --text-faint: #445566;
+  --accent-blue: #4488ff;
+  --accent-purple: #cc88ff;
+  --accent-teal: #22ccbb;
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   color: var(--text-muted);
   background: var(--bg);
   font: 16px/1.6 var(--font-sans);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -33,9 +30,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at top, rgba(16, 32, 69, 0.55), transparent 26%),
-    linear-gradient(180deg, #060a14 0%, #04070f 100%);
+  background: var(--bg);
 }
 
 body,
@@ -75,7 +70,7 @@ h1,
 h2,
 h3 {
   color: var(--text-strong);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   letter-spacing: -0.04em;
   line-height: 1.02;
 }
