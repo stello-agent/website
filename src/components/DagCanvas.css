@@ -1,0 +1,28 @@
+.dag-canvas {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  user-select: none;
+  touch-action: none;
+}
+
+.dag-edge {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.dag-node {
+  cursor: grab;
+}
+
+.dag-node:active {
+  cursor: grabbing;
+}
+
+.dag-label {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
+}

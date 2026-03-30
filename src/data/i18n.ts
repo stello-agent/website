@@ -18,26 +18,28 @@ export const strings = {
   },
   dag: {
     eyebrow: { en: 'SESSION TOPOLOGY', zh: 'SESSION 拓扑' },
-    title: { en: 'DAG centered on Main Session', zh: 'Main Session 为中心的有向无环图' },
-    dragHint: { en: '✦ Drag nodes to explore', zh: '✦ 拖拽节点探索' },
+    title: { en: 'Conversations That Branch', zh: '会话可以分支' },
+    desc: { en: 'Every sub-session is an independent agent skill. The main session orchestrates across all of them.', zh: '每个子 Session 是独立的 Agent 技能，Main Session 在所有技能之间编排协调。' },
+    dragHint: { en: 'Drag nodes to explore', zh: '拖拽节点探索' },
   },
   memory: {
-    eyebrow: { en: 'HOW MEMORY WORKS', zh: '记忆架构' },
-    title: { en: 'Three memory layers,\none intelligent topology', zh: '三层记忆，驱动跨 Session 智能' },
+    eyebrow: { en: 'THREE-LAYER MEMORY', zh: '三层记忆模型' },
+    title: { en: 'Memory That Scales', zh: '可扩展的记忆系统' },
+    desc: { en: 'Three distinct memory layers give agents precisely the right context at the right time.', zh: '三个独立记忆层，让 Agent 在恰当的时机获得恰当的上下文。' },
     l1: {
       tag: 'L1',
-      name: { en: 'Global State', zh: '全局状态' },
-      desc: { en: 'Synthesis · global key-value\nRead/write by app layer · shared', zh: 'Synthesis · 全局键值\n应用层直读写 · 拓扑共享' },
+      name: { en: 'Global Store', zh: '全局存储' },
+      desc: { en: 'Shared key-value state across all sessions', zh: '跨所有 Session 的共享键值状态' },
     },
     l2: {
       tag: 'L2',
-      name: { en: 'Session Summary', zh: 'Session 摘要' },
-      desc: { en: 'External description · only Main Session reads\nNot visible to child session itself', zh: '外部描述 · 仅 Main Session 读取\n子 Session 自身不可见' },
+      name: { en: 'Skill Description', zh: '技能描述' },
+      desc: { en: 'External view of each session\'s capabilities', zh: '每个 Session 能力的外部视图' },
     },
     l3: {
       tag: 'L3',
       name: { en: 'Raw History', zh: '原始历史' },
-      desc: { en: 'Full conversation record\nPrivate · only visible to this Session LLM', zh: '完整对话记录\n仅本 Session LLM 可见 · 私有' },
+      desc: { en: 'Full conversation context for the session itself', zh: '供 Session 自身使用的完整对话记录' },
     },
   },
   cta: {

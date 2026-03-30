@@ -76,3 +76,168 @@
   justify-content: center;
   margin-top: 8px;
 }
+
+/* ── DAG Section ──────────────────────────────── */
+
+.dag-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 140px 0;
+}
+
+.dag-text {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-blue);
+}
+
+.dag-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 44ch;
+}
+
+.dag-hint {
+  font-size: 0.82rem;
+  color: var(--text-faint);
+}
+
+.dag-canvas-wrap {
+  aspect-ratio: 16 / 10;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+@media (max-width: 900px) {
+  .dag-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* ── Memory Section ───────────────────────────── */
+
+.memory-section {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 140px 0;
+}
+
+.memory-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+}
+
+.memory-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* ── CTA Section ──────────────────────────────── */
+
+.cta-section {
+  padding: 140px 0 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+  max-width: 640px;
+}
+
+.cta-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  background: rgba(204, 136, 255, 0.1);
+  border: 1px solid rgba(204, 136, 255, 0.2);
+  border-radius: 999px;
+  padding: 4px 14px;
+}
+
+.cta-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+}
+
+.cta-desc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  max-width: 48ch;
+}
+
+.cta-terminal {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: 10px;
+  padding: 14px 24px;
+}
+
+.cta-terminal-prompt {
+  color: var(--accent-teal);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  user-select: none;
+}
+
+.cta-terminal-cmd {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text-strong);
+}
+
+.cta-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cta-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.cta-footer {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}

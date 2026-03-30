@@ -1,0 +1,22 @@
+.code-editor {
+  margin: 0;
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--text-muted);
+}
+
+.ce-comment {
+  color: #4a5a6a;
+}
+
+.ce-key {
+  color: var(--accent-blue);
+}
+
+.ce-default {
+  color: #9ab0c8;
+}

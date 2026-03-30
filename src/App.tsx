@@ -3,6 +3,9 @@ import { LangProvider } from './context/LangContext'
 import { useLang } from './hooks/useLang'
 import { strings } from './data/i18n'
 import { HeroSection } from './sections/HeroSection'
+import { DagSection } from './sections/DagSection'
+import { MemorySection } from './sections/MemorySection'
+import { CtaSection } from './sections/CtaSection'
 import './index.css'
 import './App.css'
 
@@ -47,6 +50,9 @@ function AppInner() {
       <Nav />
       <main>
         <HeroSection />
+        <DagSection />
+        <MemorySection />
+        <CtaSection />
       </main>
     </div>
   )
