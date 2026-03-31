@@ -12,19 +12,34 @@ export const strings = {
     badge: { en: 'Graph Agent SDK', zh: '拓扑图智能体 SDK' },
     titleStatic: { en: 'Stello', zh: 'Stello' },
     typewriterPhrases: [
-      { en: 'Turn chats into a living knowledge graph', zh: '把对话，变成认知网络' },
-      { en: 'Every branch runs deep, never tangled',    zh: '每条思路，独立深入不串味' },
-      { en: 'Context that never gets cut off',          zh: '上下文，永远不会被截断' },
-      { en: 'Co-evolve with AI across sessions',        zh: '与 AI，持续共同进化' },
+      {
+        en: 'Turn chats into a living knowledge graph',
+        zh: '把对话，变成认知网络',
+      },
+      {
+        en: 'Every branch runs deep, never tangled',
+        zh: '每条思路，独立深入不串味',
+      },
+      { en: 'Context that never gets cut off', zh: '上下文，永远不会被截断' },
+      { en: 'Co-evolve with AI across sessions', zh: '与 AI，持续共同进化' },
     ],
     desc: {
       en: 'When your thinking starts to branch, Stello automatically structures conversations into a persistent, parallel cognitive topology — nothing gets lost in a scrolling window.',
       zh: '当你的思维开始发散，Stello 自动将对话组织成可并行、可延续的认知拓扑——不再有结构消失在滚动窗口里。',
     },
     features: [
-      { en: 'Topics auto-branch — each direction runs in its own isolated Session', zh: '话题自动分裂，每个方向在独立 Session 中深入' },
-      { en: 'Main Session synthesizes cross-branch insights and surfaces conflicts',  zh: 'Main Session 跨分支整合洞察，自动发现矛盾' },
-      { en: 'Three-layer memory — pick up any conversation exactly where you left off', zh: '三层记忆体系，任意对话随时无缝续上' },
+      {
+        en: 'Topics auto-branch — each direction runs in its own isolated Session',
+        zh: '话题自动分裂，每个方向在独立 Session 中深入',
+      },
+      {
+        en: 'Main Session synthesizes cross-branch insights and surfaces conflicts',
+        zh: 'Main Session 跨分支整合洞察，自动发现矛盾',
+      },
+      {
+        en: 'Three-layer memory — pick up any conversation exactly where you left off',
+        zh: '三层记忆体系，任意对话随时无缝续上',
+      },
     ],
   },
   brainstorm: {
@@ -105,9 +120,12 @@ export const strings = {
   },
   memory: {
     eyebrow: { en: 'MEMORY SYSTEM', zh: '记忆系统' },
-    title: { en: 'Memory That Thinks, Not Just Stores', zh: '记忆，不只是存档' },
+    title: {
+      en: 'Memory That Thinks, Not Just Stores',
+      zh: '记忆，不只是存档',
+    },
     desc: {
-      en: 'Memory flows automatically between layers. Main Session synthesizes all child Sessions\' L2 into a unified world model.',
+      en: "Memory flows automatically between layers. Main Session synthesizes all child Sessions' L2 into a unified world model.",
       zh: '记忆在层级间自动流动，Main Session 整合所有子 Session 的 L2 生成 synthesis',
     },
     l3: {
@@ -122,7 +140,7 @@ export const strings = {
       tag: 'L2',
       name: { en: 'Capability Map', zh: '技能描述' },
       desc: {
-        en: 'A capability map distilled from your conversations — AI learns what you\'re good at and what you prefer.',
+        en: "A capability map distilled from your conversations — AI learns what you're good at and what you prefer.",
         zh: '从对话中提炼的能力图谱——AI 理解你擅长什么、偏好什么',
       },
     },
@@ -136,7 +154,10 @@ export const strings = {
     },
   },
   cta: {
-    title: { en: 'Start Building Your Cognitive Topology', zh: '开始构建你的认知拓扑' },
+    title: {
+      en: 'Start Building Your Cognitive Topology',
+      zh: '开始构建你的认知拓扑',
+    },
     desc: {
       en: 'Open-source, free, Apache-2.0 licensed. Join the community and co-evolve with AI.',
       zh: '开源、免费、Apache-2.0 协议。加入社区，与 AI 共同进化。',

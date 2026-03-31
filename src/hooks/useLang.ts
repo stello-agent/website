@@ -1,6 +1,7 @@
 // src/hooks/useLang.ts
-import { useLangContext } from '../context/LangContext'
+
 import type { Lang } from '../context/LangContext'
+import { useLangContext } from '../context/LangContext'
 
 export interface UseLang {
   lang: Lang

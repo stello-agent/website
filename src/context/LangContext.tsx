@@ -1,5 +1,5 @@
 // src/context/LangContext.tsx
-import { createContext, useState, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 export type Lang = 'en' | 'zh'
 
@@ -14,7 +14,11 @@ const LangContext = createContext<LangCtx | null>(null)
 export function LangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLang] = useState<Lang>('zh')
   const toggle = () => setLang((l) => (l === 'en' ? 'zh' : 'en'))
-  return <LangContext.Provider value={{ lang, toggle }}>{children}</LangContext.Provider>
+  return (
+    <LangContext.Provider value={{ lang, toggle }}>
+      {children}
+    </LangContext.Provider>
+  )
 }
 
 // useLangContext 供内部使用，保证在 Provider 内。

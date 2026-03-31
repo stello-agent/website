@@ -1,9 +1,9 @@
 // src/sections/UseCasesSection.tsx
 import { useMemo } from 'react'
-import { useLang } from '../hooks/useLang'
+import { TopologyDemo } from '../components/TopologyDemo'
 import { strings } from '../data/i18n'
 import { USE_CASES_TOPO } from '../data/topoData'
-import { TopologyDemo } from '../components/TopologyDemo'
+import { useLang } from '../hooks/useLang'
 import './sections.css'
 
 // UseCasesSection — Screen 4：左侧描述 + 右侧大拓扑图（留学/考研/考公场景）
@@ -12,7 +12,11 @@ export function UseCasesSection() {
   const s = strings.useCases
 
   const nodes = useMemo(
-    () => USE_CASES_TOPO.map((n) => ({ ...n, label: lang === 'en' ? n.label.en : n.label.zh })),
+    () =>
+      USE_CASES_TOPO.map((n) => ({
+        ...n,
+        label: lang === 'en' ? n.label.en : n.label.zh,
+      })),
     [lang],
   )
 

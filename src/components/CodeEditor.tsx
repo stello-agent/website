@@ -7,8 +7,20 @@ interface Props {
   accentColor?: string
 }
 
-type TokenType = 'comment' | 'string' | 'number' | 'key' | 'keyword' | 'punct' | 'plain'
-  | 'md-h' | 'md-bold' | 'md-code' | 'md-list' | 'md-link' | 'md-muted'
+type TokenType =
+  | 'comment'
+  | 'string'
+  | 'number'
+  | 'key'
+  | 'keyword'
+  | 'punct'
+  | 'plain'
+  | 'md-h'
+  | 'md-bold'
+  | 'md-code'
+  | 'md-list'
+  | 'md-link'
+  | 'md-muted'
 
 function getLang(filename: string): string {
   if (filename.endsWith('.jsonl') || filename.endsWith('.json')) return 'JSONL'
@@ -20,7 +32,9 @@ function getLang(filename: string): string {
 
 /* ── Markdown tokenizer ──────────────────────────── */
 
-function tokenizeMarkdownLine(line: string): Array<{ text: string; type: TokenType }> {
+function tokenizeMarkdownLine(
+  line: string,
+): Array<{ text: string; type: TokenType }> {
   // 标题 #
   const hMatch = line.match(/^(#{1,3})\s(.+)/)
   if (hMatch) return [{ text: line, type: 'md-h' }]
@@ -49,7 +63,9 @@ function tokenizeMarkdownLine(line: string): Array<{ text: string; type: TokenTy
   return tokenizeInlineMarkdown(line)
 }
 
-function tokenizeInlineMarkdown(text: string): Array<{ text: string; type: TokenType }> {
+function tokenizeInlineMarkdown(
+  text: string,
+): Array<{ text: string; type: TokenType }> {
   const tokens: Array<{ text: string; type: TokenType }> = []
   let i = 0
 
@@ -84,7 +100,9 @@ function tokenizeInlineMarkdown(text: string): Array<{ text: string; type: Token
 
 /* ── JSON / JSONL tokenizer ──────────────────────── */
 
-function tokenizeJsonLine(line: string): Array<{ text: string; type: TokenType }> {
+function tokenizeJsonLine(
+  line: string,
+): Array<{ text: string; type: TokenType }> {
   const tokens: Array<{ text: string; type: TokenType }> = []
   let i = 0
 
@@ -103,41 +121,54 @@ function tokenizeJsonLine(line: string): Array<{ text: string; type: TokenType }
     if (keyM) {
       tokens.push({ text: keyM[1], type: 'key' })
       tokens.push({ text: keyM[2], type: 'punct' })
-      i += keyM[0].length; continue
+      i += keyM[0].length
+      continue
     }
     const strM = line.slice(i).match(/^"(?:[^"\\]|\\.)*"/)
     if (strM) {
       tokens.push({ text: strM[0], type: 'string' })
-      i += strM[0].length; continue
+      i += strM[0].length
+      continue
     }
     const numM = line.slice(i).match(/^\d+\.?\d*/)
     if (numM && (i === 0 || !/\w/.test(line[i - 1]))) {
       tokens.push({ text: numM[0], type: 'number' })
-      i += numM[0].length; continue
+      i += numM[0].length
+      continue
     }
     const kwM = line.slice(i).match(/^(true|false|null)\b/)
     if (kwM) {
       tokens.push({ text: kwM[0], type: 'keyword' })
-      i += kwM[0].length; continue
+      i += kwM[0].length
+      continue
     }
     if ('{}[]():,;'.includes(line[i])) {
       tokens.push({ text: line[i], type: 'punct' })
-      i++; continue
+      i++
+      continue
     }
-    addPlain(line[i]); i++
+    addPlain(line[i])
+    i++
   }
 
   return tokens
 }
 
-function tokenizeLine(line: string, lang: string): Array<{ text: string; type: TokenType }> {
+function tokenizeLine(
+  line: string,
+  lang: string,
+): Array<{ text: string; type: TokenType }> {
   if (lang === 'Markdown') return tokenizeMarkdownLine(line)
   if (lang === 'JSONL') return tokenizeJsonLine(line)
   return tokenizeJsonLine(line) // TypeScript/JS 复用 JSON tokenizer
 }
 
 // CodeEditor 渲染 Monaco 风格的代码编辑器（纯 CSS，无外部库）
-export function CodeEditor({ code, filename = 'snippet.ts', accentColor }: Props) {
+export function CodeEditor({
+  code,
+  filename = 'snippet.ts',
+  accentColor,
+}: Props) {
   const lines = code.split('\n')
   const lang = getLang(filename)
 
@@ -160,7 +191,9 @@ export function CodeEditor({ code, filename = 'snippet.ts', accentColor }: Props
       <div className="monaco-body">
         <div className="monaco-gutter" aria-hidden="true">
           {lines.map((_, i) => (
-            <span key={i} className="monaco-ln">{i + 1}</span>
+            <span key={i} className="monaco-ln">
+              {i + 1}
+            </span>
           ))}
         </div>
         <pre className="monaco-code">
@@ -171,7 +204,9 @@ export function CodeEditor({ code, filename = 'snippet.ts', accentColor }: Props
               return (
                 <span key={i} className="monaco-line">
                   {tokens.map((tok, j) => (
-                    <span key={j} className={`ce-${tok.type}`}>{tok.text}</span>
+                    <span key={j} className={`ce-${tok.type}`}>
+                      {tok.text}
+                    </span>
                   ))}
                   {isLast ? <span className="monaco-cursor" /> : '\n'}
                 </span>

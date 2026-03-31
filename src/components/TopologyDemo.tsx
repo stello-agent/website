@@ -1,9 +1,9 @@
 // src/components/TopologyDemo.tsx
 // 移植自 stello/packages/devtools/web/src/pages/Topology.tsx
 // 简化为纯静态 demo：无 API、无右键菜单、无面板，保留 Canvas 渲染 + pan/zoom + hover
-import { useRef, useEffect, useState, useCallback } from 'react'
-import { useThemeContext } from '../context/ThemeContext'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Theme } from '../context/ThemeContext'
+import { useThemeContext } from '../context/ThemeContext'
 
 /* ── 类型 ─────────────────────────────────────────── */
 
@@ -67,38 +67,139 @@ interface LayoutNode extends TopoNode {
 /* ── 静态 demo 数据 ────────────────────────────────── */
 
 const DEMO_NODES: TopoNode[] = [
-  { id: 'main',       label: 'main',       parentId: null,       status: 'active',   turns: 28, children: ['research', 'codegen', 'planning'], refs: [] },
-  { id: 'research',   label: 'research',   parentId: 'main',     status: 'active',   turns: 11, children: ['search', 'analysis'],              refs: [] },
-  { id: 'search',     label: 'web-search', parentId: 'research', status: 'active',   turns: 4,  children: [],                                  refs: [] },
-  { id: 'analysis',   label: 'analysis',   parentId: 'research', status: 'archived', turns: 6,  children: [],                                  refs: ['codegen'] },
-  { id: 'codegen',    label: 'code-gen',   parentId: 'main',     status: 'active',   turns: 15, children: ['backend', 'frontend'],              refs: [] },
-  { id: 'backend',    label: 'backend',    parentId: 'codegen',  status: 'active',   turns: 9,  children: ['api'],                             refs: [] },
-  { id: 'api',        label: 'api-design', parentId: 'backend',  status: 'active',   turns: 5,  children: [],                                  refs: [] },
-  { id: 'frontend',   label: 'frontend',   parentId: 'codegen',  status: 'active',   turns: 7,  children: [],                                  refs: [] },
-  { id: 'planning',   label: 'planning',   parentId: 'main',     status: 'active',   turns: 8,  children: ['sprint-1', 'sprint-2'],             refs: [] },
-  { id: 'sprint-1',   label: 'sprint-1',   parentId: 'planning', status: 'archived', turns: 12, children: [],                                  refs: [] },
-  { id: 'sprint-2',   label: 'sprint-2',   parentId: 'planning', status: 'active',   turns: 6,  children: [],                                  refs: ['backend'] },
+  {
+    id: 'main',
+    label: 'main',
+    parentId: null,
+    status: 'active',
+    turns: 28,
+    children: ['research', 'codegen', 'planning'],
+    refs: [],
+  },
+  {
+    id: 'research',
+    label: 'research',
+    parentId: 'main',
+    status: 'active',
+    turns: 11,
+    children: ['search', 'analysis'],
+    refs: [],
+  },
+  {
+    id: 'search',
+    label: 'web-search',
+    parentId: 'research',
+    status: 'active',
+    turns: 4,
+    children: [],
+    refs: [],
+  },
+  {
+    id: 'analysis',
+    label: 'analysis',
+    parentId: 'research',
+    status: 'archived',
+    turns: 6,
+    children: [],
+    refs: ['codegen'],
+  },
+  {
+    id: 'codegen',
+    label: 'code-gen',
+    parentId: 'main',
+    status: 'active',
+    turns: 15,
+    children: ['backend', 'frontend'],
+    refs: [],
+  },
+  {
+    id: 'backend',
+    label: 'backend',
+    parentId: 'codegen',
+    status: 'active',
+    turns: 9,
+    children: ['api'],
+    refs: [],
+  },
+  {
+    id: 'api',
+    label: 'api-design',
+    parentId: 'backend',
+    status: 'active',
+    turns: 5,
+    children: [],
+    refs: [],
+  },
+  {
+    id: 'frontend',
+    label: 'frontend',
+    parentId: 'codegen',
+    status: 'active',
+    turns: 7,
+    children: [],
+    refs: [],
+  },
+  {
+    id: 'planning',
+    label: 'planning',
+    parentId: 'main',
+    status: 'active',
+    turns: 8,
+    children: ['sprint-1', 'sprint-2'],
+    refs: [],
+  },
+  {
+    id: 'sprint-1',
+    label: 'sprint-1',
+    parentId: 'planning',
+    status: 'archived',
+    turns: 12,
+    children: [],
+    refs: [],
+  },
+  {
+    id: 'sprint-2',
+    label: 'sprint-2',
+    parentId: 'planning',
+    status: 'active',
+    turns: 6,
+    children: [],
+    refs: ['backend'],
+  },
 ]
 
 /* ── 颜色函数（网站调色板） ──────────────────────────── */
 
-function getNodeStyle(node: TopoNode, isMain: boolean, theme: Theme): { color: string; glowColor: string } {
+function getNodeStyle(
+  node: TopoNode,
+  isMain: boolean,
+  theme: Theme,
+): { color: string; glowColor: string } {
   if (theme === 'dark') {
-    if (isMain)                       return { color: '#4488ff', glowColor: 'rgba(68,136,255,0.55)' }
-    if (node.status === 'archived')   return { color: '#445566', glowColor: 'rgba(68,85,102,0.25)' }
-    if (node.children.length === 0)   return { color: '#22ccbb', glowColor: 'rgba(34,204,187,0.35)' }
-    return                                   { color: '#cc88ff', glowColor: 'rgba(204,136,255,0.40)' }
+    if (isMain) return { color: '#4488ff', glowColor: 'rgba(68,136,255,0.55)' }
+    if (node.status === 'archived')
+      return { color: '#445566', glowColor: 'rgba(68,85,102,0.25)' }
+    if (node.children.length === 0)
+      return { color: '#22ccbb', glowColor: 'rgba(34,204,187,0.35)' }
+    return { color: '#cc88ff', glowColor: 'rgba(204,136,255,0.40)' }
   } else {
-    if (isMain)                       return { color: '#2266ee', glowColor: 'rgba(34,102,238,0.35)' }
-    if (node.status === 'archived')   return { color: '#8899b0', glowColor: 'rgba(136,153,176,0.20)' }
-    if (node.children.length === 0)   return { color: '#109980', glowColor: 'rgba(16,153,128,0.25)' }
-    return                                   { color: '#8844dd', glowColor: 'rgba(136,68,221,0.30)' }
+    if (isMain) return { color: '#2266ee', glowColor: 'rgba(34,102,238,0.35)' }
+    if (node.status === 'archived')
+      return { color: '#8899b0', glowColor: 'rgba(136,153,176,0.20)' }
+    if (node.children.length === 0)
+      return { color: '#109980', glowColor: 'rgba(16,153,128,0.25)' }
+    return { color: '#8844dd', glowColor: 'rgba(136,68,221,0.30)' }
   }
 }
 
 /* ── 布局算法（同心环，从 devtools 原样移植） ──────────── */
 
-function computeLayout(nodes: TopoNode[], width: number, height: number, theme: Theme): LayoutNode[] {
+function computeLayout(
+  nodes: TopoNode[],
+  width: number,
+  height: number,
+  theme: Theme,
+): LayoutNode[] {
   const cx = width * 0.42
   const cy = height / 2
   const nodeMap = new Map(nodes.map((n) => [n.id, n]))
@@ -127,7 +228,7 @@ function computeLayout(nodes: TopoNode[], width: number, height: number, theme: 
     current = next
   }
 
-  const ringSpacing = Math.min(width, height) * 0.20
+  const ringSpacing = Math.min(width, height) * 0.2
   const maxTurns = Math.max(...nodes.map((n) => n.turns), 1)
 
   for (let layer = 0; layer < layers.length; layer++) {
@@ -137,10 +238,13 @@ function computeLayout(nodes: TopoNode[], width: number, height: number, theme: 
     for (let i = 0; i < ring.length; i++) {
       const node = ring[i]!
       const isMain = node.parentId === null
-      const angle = ring.length === 1 ? 0 : (2 * Math.PI * i) / ring.length - Math.PI / 2
+      const angle =
+        ring.length === 1 ? 0 : (2 * Math.PI * i) / ring.length - Math.PI / 2
 
-      const jitterX = layer === 0 ? 0 : Math.sin(i * 7.3 + layer * 2.1) * ringSpacing * 0.15
-      const jitterY = layer === 0 ? 0 : Math.cos(i * 5.7 + layer * 3.4) * ringSpacing * 0.15
+      const jitterX =
+        layer === 0 ? 0 : Math.sin(i * 7.3 + layer * 2.1) * ringSpacing * 0.15
+      const jitterY =
+        layer === 0 ? 0 : Math.cos(i * 5.7 + layer * 3.4) * ringSpacing * 0.15
 
       const x = cx + Math.cos(angle) * radius + jitterX
       const y = cy + Math.sin(angle) * radius + jitterY
@@ -150,7 +254,8 @@ function computeLayout(nodes: TopoNode[], width: number, height: number, theme: 
       const size = sizeBase + sizeScale
 
       const { color, glowColor } = getNodeStyle(node, isMain, theme)
-      const brightness = node.status === 'archived' ? 0.5 : 0.8 + (node.turns / maxTurns) * 0.2
+      const brightness =
+        node.status === 'archived' ? 0.5 : 0.8 + (node.turns / maxTurns) * 0.2
 
       result.push({ ...node, x, y, size, color, glowColor, brightness })
     }
@@ -161,12 +266,19 @@ function computeLayout(nodes: TopoNode[], width: number, height: number, theme: 
 
 /* ── 辅助函数 ─────────────────────────────────────── */
 
-function getDisplayParentId(node: Pick<TopoNode, 'id' | 'parentId' | 'sourceSessionId'>): string | null {
-  if (node.sourceSessionId && node.sourceSessionId !== node.id) return node.sourceSessionId
+function getDisplayParentId(
+  node: Pick<TopoNode, 'id' | 'parentId' | 'sourceSessionId'>,
+): string | null {
+  if (node.sourceSessionId && node.sourceSessionId !== node.id)
+    return node.sourceSessionId
   return node.parentId
 }
 
-function isAdjacent(node: LayoutNode, highlightedId: string | null, nodeMap: Map<string, LayoutNode>): boolean {
+function isAdjacent(
+  node: LayoutNode,
+  highlightedId: string | null,
+  nodeMap: Map<string, LayoutNode>,
+): boolean {
   if (!highlightedId) return false
   if (node.id === highlightedId) return true
   if (getDisplayParentId(node) === highlightedId) return true
@@ -189,7 +301,14 @@ function renderFrame(
   ct: CanvasTheme,
 ) {
   const margin = 2000
-  const grad = ctx.createRadialGradient(width / 2, height / 2, 0, width / 2, height / 2, width)
+  const grad = ctx.createRadialGradient(
+    width / 2,
+    height / 2,
+    0,
+    width / 2,
+    height / 2,
+    width,
+  )
   grad.addColorStop(0, ct.bgCenter)
   grad.addColorStop(1, ct.bgEdge)
   ctx.fillStyle = grad
@@ -205,11 +324,18 @@ function renderFrame(
     const parent = nodeMap.get(parentId)
     if (!parent) continue
 
-    const adj = hasHighlight && isAdjacent(node, highlightedId, nodeMap) && isAdjacent(parent, highlightedId, nodeMap)
+    const adj =
+      hasHighlight &&
+      isAdjacent(node, highlightedId, nodeMap) &&
+      isAdjacent(parent, highlightedId, nodeMap)
     ctx.beginPath()
     ctx.moveTo(parent.x, parent.y)
     ctx.lineTo(node.x, node.y)
-    ctx.strokeStyle = adj ? ct.lineHighlight : hasHighlight ? ct.lineDim : ct.lineColor
+    ctx.strokeStyle = adj
+      ? ct.lineHighlight
+      : hasHighlight
+        ? ct.lineDim
+        : ct.lineColor
     ctx.lineWidth = adj ? 3 : getDisplayParentId(parent) === null ? 2.5 : 1.5
     ctx.shadowColor = adj ? ct.lineColor : ct.lineDim
     ctx.shadowBlur = adj ? 12 : 8
@@ -222,11 +348,18 @@ function renderFrame(
     for (const refId of node.refs) {
       const ref = nodeMap.get(refId)
       if (!ref) continue
-      const adj = hasHighlight && isAdjacent(node, highlightedId, nodeMap) && isAdjacent(ref, highlightedId, nodeMap)
+      const adj =
+        hasHighlight &&
+        isAdjacent(node, highlightedId, nodeMap) &&
+        isAdjacent(ref, highlightedId, nodeMap)
       ctx.beginPath()
       ctx.moveTo(node.x, node.y)
       ctx.lineTo(ref.x, ref.y)
-      ctx.strokeStyle = adj ? ct.refHighlight : hasHighlight ? ct.refDim : ct.refColor
+      ctx.strokeStyle = adj
+        ? ct.refHighlight
+        : hasHighlight
+          ? ct.refDim
+          : ct.refColor
       ctx.lineWidth = adj ? 2 : 1.5
       ctx.setLineDash([6, 4])
       ctx.shadowColor = ct.refDim
@@ -243,7 +376,8 @@ function renderFrame(
     const adjacent = isAdjacent(node, highlightedId, nodeMap)
     const dimmed = hasHighlight && !adjacent
 
-    const pulse = Math.sin(time * 0.002 + node.x * 0.01 + node.y * 0.01) * 0.15 + 1
+    const pulse =
+      Math.sin(time * 0.002 + node.x * 0.01 + node.y * 0.01) * 0.15 + 1
     const animatedSize = Math.max(1, node.size * (isHighlighted ? 1.2 : pulse))
 
     ctx.beginPath()
@@ -269,7 +403,11 @@ function renderFrame(
     const isMain = getDisplayParentId(node) === null
     ctx.font = `${isMain ? '600' : '500'} ${isMain ? 11 : 9}px Inter, system-ui`
     ctx.fillStyle = node.color
-    ctx.globalAlpha = dimmed ? 0.2 : node.status === 'archived' ? 0.5 : ct.labelAlpha
+    ctx.globalAlpha = dimmed
+      ? 0.2
+      : node.status === 'archived'
+        ? 0.5
+        : ct.labelAlpha
     ctx.textAlign = 'left'
     ctx.fillText(node.label, node.x + animatedSize + 6, node.y + 4)
     ctx.globalAlpha = 1
@@ -294,12 +432,21 @@ export function TopologyDemo({ nodes: externalNodes }: TopologyDemoProps = {}) {
   const highlightedRef = useRef<string | null>(null)
   const themeRef = useRef(theme)
 
-  useEffect(() => { highlightedRef.current = highlighted }, [highlighted])
-  useEffect(() => { themeRef.current = theme }, [theme])
+  useEffect(() => {
+    highlightedRef.current = highlighted
+  }, [highlighted])
+  useEffect(() => {
+    themeRef.current = theme
+  }, [theme])
 
   // 布局计算：节点居中在画布上
   useEffect(() => {
-    nodesRef.current = computeLayout(activeNodes, size.width, size.height, theme)
+    nodesRef.current = computeLayout(
+      activeNodes,
+      size.width,
+      size.height,
+      theme,
+    )
   }, [activeNodes, size, theme])
 
   // ResizeObserver
@@ -329,7 +476,15 @@ export function TopologyDemo({ nodes: externalNodes }: TopologyDemoProps = {}) {
     let rafId: number
     const loop = (time: number) => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      renderFrame(ctx, nodesRef.current, size.width, size.height, highlightedRef.current, time, canvasThemes[themeRef.current])
+      renderFrame(
+        ctx,
+        nodesRef.current,
+        size.width,
+        size.height,
+        highlightedRef.current,
+        time,
+        canvasThemes[themeRef.current],
+      )
       rafId = requestAnimationFrame(loop)
     }
     rafId = requestAnimationFrame(loop)
@@ -337,31 +492,50 @@ export function TopologyDemo({ nodes: externalNodes }: TopologyDemoProps = {}) {
   }, [size])
 
   // hover 检测（屏幕坐标直接等于世界坐标，无 camera 偏移）
-  const hitTest = useCallback((screenX: number, screenY: number): LayoutNode | null => {
-    return nodesRef.current.find((n) => {
-      const dx = n.x - screenX
-      const dy = n.y - screenY
-      return dx * dx + dy * dy <= (n.size + 6) * (n.size + 6)
-    }) ?? null
-  }, [])
+  const hitTest = useCallback(
+    (screenX: number, screenY: number): LayoutNode | null => {
+      return (
+        nodesRef.current.find((n) => {
+          const dx = n.x - screenX
+          const dy = n.y - screenY
+          return dx * dx + dy * dy <= (n.size + 6) * (n.size + 6)
+        }) ?? null
+      )
+    },
+    [],
+  )
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const rect = canvas.getBoundingClientRect()
-    const scaleX = size.width / rect.width
-    const scaleY = size.height / rect.height
-    const hit = hitTest((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY)
-    setHighlighted(hit?.id ?? null)
-    canvas.style.cursor = hit ? 'pointer' : 'default'
-  }, [hitTest, size])
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLCanvasElement>) => {
+      const canvas = canvasRef.current
+      if (!canvas) return
+      const rect = canvas.getBoundingClientRect()
+      const scaleX = size.width / rect.width
+      const scaleY = size.height / rect.height
+      const hit = hitTest(
+        (e.clientX - rect.left) * scaleX,
+        (e.clientY - rect.top) * scaleY,
+      )
+      setHighlighted(hit?.id ?? null)
+      canvas.style.cursor = hit ? 'pointer' : 'default'
+    },
+    [hitTest, size],
+  )
 
   const handleMouseLeave = useCallback(() => {
     setHighlighted(null)
   }, [])
 
   return (
-    <div ref={containerRef} style={{ width: '100%', height: '100%', overflow: 'hidden', borderRadius: 'inherit' }}>
+    <div
+      ref={containerRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        borderRadius: 'inherit',
+      }}
+    >
       <canvas
         ref={canvasRef}
         style={{ width: '100%', height: '100%', display: 'block' }}

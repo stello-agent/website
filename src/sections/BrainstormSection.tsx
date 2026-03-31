@@ -1,9 +1,9 @@
 // src/sections/BrainstormSection.tsx
 import { useMemo } from 'react'
-import { useLang } from '../hooks/useLang'
+import { TopologyDemo } from '../components/TopologyDemo'
 import { strings } from '../data/i18n'
 import { BRAINSTORM_TOPO } from '../data/topoData'
-import { TopologyDemo } from '../components/TopologyDemo'
+import { useLang } from '../hooks/useLang'
 import './sections.css'
 
 // BrainstormSection — Screen 3：左侧大拓扑图（产品头脑风暴）+ 右侧描述
@@ -12,7 +12,11 @@ export function BrainstormSection() {
   const s = strings.brainstorm
 
   const nodes = useMemo(
-    () => BRAINSTORM_TOPO.map((n) => ({ ...n, label: lang === 'en' ? n.label.en : n.label.zh })),
+    () =>
+      BRAINSTORM_TOPO.map((n) => ({
+        ...n,
+        label: lang === 'en' ? n.label.en : n.label.zh,
+      })),
     [lang],
   )
 
