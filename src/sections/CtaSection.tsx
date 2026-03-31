@@ -1,6 +1,7 @@
 // src/sections/CtaSection.tsx
-import { useLang } from '../hooks/useLang'
+
 import { strings } from '../data/i18n'
+import { useLang } from '../hooks/useLang'
 
 // CtaSection 渲染页面底部行动召唤区域（Screen 5）
 export function CtaSection() {
@@ -15,19 +16,20 @@ export function CtaSection() {
         <div className="cta-terminal">
           <div className="cta-terminal-titlebar" aria-hidden="true">
             <span className="cta-terminal-dots">
-              <span /><span /><span />
+              <span />
+              <span />
+              <span />
             </span>
           </div>
           <div className="cta-terminal-body">
             <span className="cta-terminal-prompt">$</span>
-            <code className="cta-terminal-cmd">npm install @stello-ai/core</code>
+            <code className="cta-terminal-cmd">
+              npm install @stello-ai/core
+            </code>
           </div>
         </div>
         <div className="cta-actions">
-          <a
-            className="button button-primary"
-            href="/docs/quick-start"
-          >
+          <a className="button button-primary" href="/docs/quick-start">
             {t(s.quickStart.en, s.quickStart.zh)}
           </a>
           <a

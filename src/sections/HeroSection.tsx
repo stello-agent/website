@@ -1,8 +1,8 @@
 // src/sections/HeroSection.tsx
-import { useState, useEffect } from 'react'
-import { useLang } from '../hooks/useLang'
-import { strings } from '../data/i18n'
+import { useEffect, useState } from 'react'
 import { TopologyDemo } from '../components/TopologyDemo'
+import { strings } from '../data/i18n'
+import { useLang } from '../hooks/useLang'
 import './sections.css'
 
 const TYPING_SPEED_MS = 55
@@ -57,7 +57,9 @@ export function HeroSection() {
       {/* Left column */}
       <div className="hero-left">
         <h1 className="hero-h1">
-          <span className="hero-h1-brand">{t(s.titleStatic.en, s.titleStatic.zh)}</span>
+          <span className="hero-h1-brand">
+            {t(s.titleStatic.en, s.titleStatic.zh)}
+          </span>
         </h1>
 
         <p className="hero-subtitle">首个开源 Agent 认知拓扑引擎</p>
@@ -67,7 +69,9 @@ export function HeroSection() {
           <span
             className={`hero-cursor${phase === 'holding' ? ' hero-cursor--blink' : ''}`}
             aria-hidden="true"
-          >|</span>
+          >
+            |
+          </span>
         </p>
 
         <p className="hero-desc">{t(s.desc.en, s.desc.zh)}</p>

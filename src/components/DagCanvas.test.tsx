@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
+import type { DagEdge, DagNode } from '../data/dagData'
 import { DagCanvas } from './DagCanvas'
-import type { DagNode, DagEdge } from '../data/dagData'
 
 const nodes: DagNode[] = [
   { id: 'a', label: 'A', x: 100, y: 100, r: 30, color: '#4488ff' },

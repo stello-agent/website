@@ -1,7 +1,8 @@
 // src/sections/MemorySection.tsx
-import { useLang } from '../hooks/useLang'
-import { strings } from '../data/i18n'
+
 import { CardStack } from '../components/CardStack'
+import { strings } from '../data/i18n'
+import { useLang } from '../hooks/useLang'
 
 // MemorySection 展示三层记忆系统（Screen 4）
 export function MemorySection() {

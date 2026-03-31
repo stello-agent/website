@@ -1,7 +1,8 @@
 // src/components/CardStack.tsx
+import type { CSSProperties } from 'react'
 import { useState } from 'react'
-import { CodeEditor } from './CodeEditor'
 import { CODE_SNIPPETS } from '../data/codeContent'
+import { CodeEditor } from './CodeEditor'
 import './CardStack.css'
 
 interface MemoryCard {
@@ -22,20 +23,23 @@ export function CardStack({ cards }: Props) {
   const [frontKey, setFrontKey] = useState(0)
 
   const prev = () => {
-    setOrder(prev => {
+    setOrder((prev) => {
       const next = [...prev]
-      const last = next.pop()!
+      const last = next.pop()
+      if (last === undefined) {
+        return prev
+      }
       return [last, ...next]
     })
-    setFrontKey(k => k + 1)
+    setFrontKey((k) => k + 1)
   }
 
   const next = () => {
-    setOrder(prev => {
+    setOrder((prev) => {
       const [first, ...rest] = prev
       return [...rest, first]
     })
-    setFrontKey(k => k + 1)
+    setFrontKey((k) => k + 1)
   }
 
   const frontCard = cards[order[0]]
@@ -46,7 +50,14 @@ export function CardStack({ cards }: Props) {
       {/* Left: card deck + nav arrows */}
       <div className="deck-area">
         <div className="deck-nav">
-          <button className="deck-arrow" onClick={prev} aria-label="Previous card">‹</button>
+          <button
+            type="button"
+            className="deck-arrow"
+            onClick={prev}
+            aria-label="Previous card"
+          >
+            ‹
+          </button>
           <div className="deck-wrap">
             {order.map((cardIdx, pos) => {
               const card = cards[cardIdx]
@@ -54,7 +65,7 @@ export function CardStack({ cards }: Props) {
                 <div
                   key={card.tag}
                   className={`deck-card deck-card--${pos}`}
-                  style={{ '--card-color': card.color } as React.CSSProperties}
+                  style={{ '--card-color': card.color } as CSSProperties}
                 >
                   <div className="deck-card-glow" />
                   {/* key changes on each nav to retrigger the float-in animation */}
@@ -70,7 +81,14 @@ export function CardStack({ cards }: Props) {
               )
             })}
           </div>
-          <button className="deck-arrow" onClick={next} aria-label="Next card">›</button>
+          <button
+            type="button"
+            className="deck-arrow"
+            onClick={next}
+            aria-label="Next card"
+          >
+            ›
+          </button>
         </div>
       </div>
 

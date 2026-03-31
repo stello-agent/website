@@ -1,6 +1,6 @@
 // src/components/DagCanvas.tsx
-import { useState, useCallback, useRef } from 'react'
-import type { DagNode, DagEdge } from '../data/dagData'
+import { useCallback, useRef, useState } from 'react'
+import type { DagEdge, DagNode } from '../data/dagData'
 import './DagCanvas.css'
 
 interface Props {
@@ -16,23 +16,31 @@ interface Positions {
 // nodeType: 'center' → 发光圆圈; 'branch' → 彩色粗文字; 'leaf' → 小灰文字; undefined → leaf
 export function DagCanvas({ nodes, edges }: Props) {
   const [positions, setPositions] = useState<Positions>(() =>
-    Object.fromEntries(nodes.map((n) => [n.id, { x: n.x, y: n.y }]))
+    Object.fromEntries(nodes.map((n) => [n.id, { x: n.x, y: n.y }])),
   )
   const dragging = useRef<{ id: string; ox: number; oy: number } | null>(null)
 
-  const onPointerDown = useCallback((e: React.PointerEvent, id: string) => {
-    e.currentTarget.setPointerCapture(e.pointerId)
-    const pos = positions[id]
-    dragging.current = { id, ox: e.clientX - pos.x, oy: e.clientY - pos.y }
-  }, [positions])
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent, id: string) => {
+      e.currentTarget.setPointerCapture(e.pointerId)
+      const pos = positions[id]
+      dragging.current = { id, ox: e.clientX - pos.x, oy: e.clientY - pos.y }
+    },
+    [positions],
+  )
 
   const onPointerMove = useCallback((e: React.PointerEvent) => {
     if (!dragging.current) return
     const { id, ox, oy } = dragging.current
-    setPositions((prev) => ({ ...prev, [id]: { x: e.clientX - ox, y: e.clientY - oy } }))
+    setPositions((prev) => ({
+      ...prev,
+      [id]: { x: e.clientX - ox, y: e.clientY - oy },
+    }))
   }, [])
 
-  const onPointerUp = useCallback(() => { dragging.current = null }, [])
+  const onPointerUp = useCallback(() => {
+    dragging.current = null
+  }, [])
 
   const getNode = (id: string) => nodes.find((n) => n.id === id)
 
@@ -71,8 +79,10 @@ export function DagCanvas({ nodes, edges }: Props) {
         return (
           <line
             key={`${edge.from}-${edge.to}`}
-            x1={fp.x} y1={fp.y}
-            x2={tp.x} y2={tp.y}
+            x1={fp.x}
+            y1={fp.y}
+            x2={tp.x}
+            y2={tp.y}
             stroke="rgba(255,255,255,0.10)"
             strokeWidth={1}
           />
@@ -94,15 +104,28 @@ export function DagCanvas({ nodes, edges }: Props) {
               style={{ cursor: 'grab' }}
             >
               {/* Outer glow ring */}
-              <circle r={node.r + 10} fill={`${node.color}08`} stroke={`${node.color}20`} strokeWidth={1} />
+              <circle
+                r={node.r + 10}
+                fill={`${node.color}08`}
+                stroke={`${node.color}20`}
+                strokeWidth={1}
+              />
               {/* Main circle */}
-              <circle r={node.r} fill={`${node.color}18`} stroke={node.color} strokeWidth={1.5} filter="url(#center-glow)" />
+              <circle
+                r={node.r}
+                fill={`${node.color}18`}
+                stroke={node.color}
+                strokeWidth={1.5}
+                filter="url(#center-glow)"
+              />
               {/* Label */}
               {lines.map((line, i) => (
                 <text
                   key={i}
                   textAnchor="middle"
-                  dy={lines.length === 1 ? '0.35em' : i === 0 ? '-0.15em' : '1em'}
+                  dy={
+                    lines.length === 1 ? '0.35em' : i === 0 ? '-0.15em' : '1em'
+                  }
                   fill={node.color}
                   fontSize="13"
                   fontWeight="700"
