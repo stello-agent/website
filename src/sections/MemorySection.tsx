@@ -1,13 +1,30 @@
 // src/sections/MemorySection.tsx
-
+import { useState } from 'react'
 import { CardStack } from '../components/CardStack'
+import { TopologyGraph } from '../components/TopologyGraph'
+import type { TopologyNode } from '../components/TopologyGraph'
+import {
+  memoryNodes,
+  memoryEdges,
+  MEMORY_GROUP_COLORS,
+  CARD_INDEX_TO_GROUP,
+  GROUP_TO_CARD_INDEX,
+} from '../data/memoryTopoData'
 import { strings } from '../data/i18n'
+import { useThemeContext } from '../context/ThemeContext'
 import { useLang } from '../hooks/useLang'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 
-// MemorySection 展示三层记忆系统（Screen 4）
 export function MemorySection() {
   const { t } = useLang()
+  const { theme } = useThemeContext()
   const s = strings.memory
+
+  const [activeCardIndex, setActiveCardIndex] = useState(0)
+  const activeGroup = CARD_INDEX_TO_GROUP[activeCardIndex]
+
+  const [topoRef, topoVisible] = useIntersectionObserver<HTMLDivElement>()
+  const [cardsRef, cardsVisible] = useIntersectionObserver<HTMLDivElement>()
 
   const cards = [
     {
@@ -33,14 +50,50 @@ export function MemorySection() {
     },
   ]
 
+  const handleNodeClick = (node: TopologyNode) => {
+    if (node.group && node.group in GROUP_TO_CARD_INDEX) {
+      setActiveCardIndex(GROUP_TO_CARD_INDEX[node.group])
+    }
+  }
+
   return (
-    <section className="memory-section">
+    <section className="memory-section memory-v5">
       <div className="memory-header">
         <span className="section-eyebrow">{t(s.eyebrow.en, s.eyebrow.zh)}</span>
         <h2>{t(s.title.en, s.title.zh)}</h2>
         <p className="memory-desc">{t(s.desc.en, s.desc.zh)}</p>
       </div>
-      <CardStack cards={cards} />
+
+      <div className="memory-v5-body">
+        <div
+          ref={topoRef}
+          className={`memory-v5-topo animate-in animate-in--left${topoVisible ? ' visible' : ''}`}
+        >
+          <TopologyGraph
+            nodes={memoryNodes}
+            edges={memoryEdges}
+            activeGroup={activeGroup}
+            highlightMode="click"
+            onNodeClick={handleNodeClick}
+            groupColors={MEMORY_GROUP_COLORS}
+            width={420}
+            height={380}
+            theme={theme}
+          />
+        </div>
+
+        <div
+          ref={cardsRef}
+          className={`memory-v5-cards animate-in animate-in--right${cardsVisible ? ' visible' : ''}`}
+          style={{ transitionDelay: '100ms' }}
+        >
+          <CardStack
+            cards={cards}
+            activeIndex={activeCardIndex}
+            onActiveChange={setActiveCardIndex}
+          />
+        </div>
+      </div>
     </section>
   )
 }

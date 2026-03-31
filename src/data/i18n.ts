@@ -13,15 +13,21 @@ export const strings = {
     titleStatic: { en: 'Stello', zh: 'Stello' },
     typewriterPhrases: [
       {
-        en: 'Turn chats into a living knowledge graph',
-        zh: '把对话，变成认知网络',
+        en: 'Turn conversations into cognitive topology',
+        zh: '把对话，变成认知拓扑网络',
       },
       {
-        en: 'Every branch runs deep, never tangled',
-        zh: '每条思路，独立深入不串味',
+        en: 'Understand the world the AI-native way',
+        zh: '用 AI Native 的方式认识世界',
       },
-      { en: 'Context that never gets cut off', zh: '上下文，永远不会被截断' },
-      { en: 'Co-evolve with AI across sessions', zh: '与 AI，持续共同进化' },
+      {
+        en: 'Multi-branch parallel exploration, global awareness auto-synthesis',
+        zh: '多分支并行探索，全局意识自动整合',
+      },
+      {
+        en: "Your thinking is branching out — don't let linear chat limit it!",
+        zh: '你的思维正在发散成长！别让线性对话限制了它！',
+      },
     ],
     desc: {
       en: 'When your thinking starts to branch, Stello automatically structures conversations into a persistent, parallel cognitive topology — nothing gets lost in a scrolling window.',
