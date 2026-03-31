@@ -1,47 +1,96 @@
 // src/sections/UseCasesSection.tsx
-import { useMemo } from 'react'
-import { TopologyDemo } from '../components/TopologyDemo'
-import { strings } from '../data/i18n'
-import { USE_CASES_TOPO } from '../data/topoData'
+// Interactive use cases: click topology nodes or pills → switch scenario card
+import { useState } from 'react'
+import { TopologyGraph } from '../components/TopologyGraph'
+import type { TopologyNode } from '../components/TopologyGraph'
+import {
+  usecases,
+  usecaseNodes,
+  usecaseEdges,
+  UC_GROUP_COLORS,
+} from '../data/usecasesData'
+import { useThemeContext } from '../context/ThemeContext'
 import { useLang } from '../hooks/useLang'
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 import './sections.css'
 
-// UseCasesSection — Screen 4：左侧描述 + 右侧大拓扑图（留学/考研/考公场景）
 export function UseCasesSection() {
-  const { t, lang } = useLang()
-  const s = strings.useCases
+  const { t } = useLang()
+  const { theme } = useThemeContext()
 
-  const nodes = useMemo(
-    () =>
-      USE_CASES_TOPO.map((n) => ({
-        ...n,
-        label: lang === 'en' ? n.label.en : n.label.zh,
-      })),
-    [lang],
-  )
+  const [activeId, setActiveId] = useState(usecases[0].id)
+  const activeCase = usecases.find((u) => u.id === activeId) ?? usecases[0]
+
+  const [panelRef, panelVisible] = useIntersectionObserver<HTMLDivElement>()
+
+  const handleNodeClick = (node: TopologyNode) => {
+    if (!node.group) return
+    const uc = usecases.find((u) => u.id === node.group)
+    if (uc) setActiveId(uc.id)
+  }
 
   return (
     <section className="topo-section topo-section--right">
-      <div className="topo-text">
-        <span className="section-eyebrow">{t(s.eyebrow.en, s.eyebrow.zh)}</span>
-        <h2>{t(s.title.en, s.title.zh)}</h2>
-        <p className="topo-desc">{t(s.desc.en, s.desc.zh)}</p>
-        <ul className="topo-features">
-          {s.cards.map((card, i) => (
-            <li key={i}>
-              <span className="topo-feature-dot" aria-hidden="true" />
-              <div>
-                <strong>{t(card.title.en, card.title.zh)}</strong>
-                <p>{t(card.desc.en, card.desc.zh)}</p>
-              </div>
-            </li>
+      {/* Left: scenario card */}
+      <div
+        ref={panelRef}
+        className={`uc-panel animate-in animate-in--left${panelVisible ? ' visible' : ''}`}
+      >
+        <h3 className="uc-panel-title">
+          {t(activeCase.title.en, activeCase.title.zh)}
+        </h3>
+        <p className="uc-panel-subtitle" style={{ color: UC_GROUP_COLORS[activeId] }}>
+          {t(activeCase.subtitle.en, activeCase.subtitle.zh)}
+        </p>
+        <p className="uc-panel-desc">
+          {t(activeCase.description.en, activeCase.description.zh)}
+        </p>
+
+        {/* Child scenario tags */}
+        <div className="uc-children">
+          {activeCase.children.map((child, i) => (
+            <span
+              key={i}
+              className="uc-child-tag"
+              style={{ borderColor: UC_GROUP_COLORS[activeId], color: UC_GROUP_COLORS[activeId] }}
+            >
+              {t(child.en, child.zh)}
+            </span>
           ))}
-        </ul>
+        </div>
+
+        {/* Navigation pills — all scenarios */}
+        <div className="uc-nav-pills">
+          {usecases.map((uc) => (
+            <button
+              key={uc.id}
+              type="button"
+              className={`uc-pill${activeId === uc.id ? ' uc-pill--active' : ''}`}
+              style={
+                activeId === uc.id
+                  ? { borderColor: UC_GROUP_COLORS[uc.id], color: UC_GROUP_COLORS[uc.id] }
+                  : undefined
+              }
+              onClick={() => setActiveId(uc.id)}
+            >
+              {t(uc.title.en, uc.title.zh)}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="topo-canvas-wrap">
-        <TopologyDemo nodes={nodes} />
-      </div>
+      {/* Right: topology */}
+      <TopologyGraph
+        nodes={usecaseNodes}
+        edges={usecaseEdges}
+        activeGroup={activeId}
+        highlightMode="click"
+        onNodeClick={handleNodeClick}
+        groupColors={UC_GROUP_COLORS}
+        width={560}
+        height={420}
+        theme={theme}
+      />
     </section>
   )
 }

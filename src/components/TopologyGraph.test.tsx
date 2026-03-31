@@ -83,6 +83,25 @@ describe('applyPhysics', () => {
     expect(nodes[0].x).not.toBe(100)
     expect(nodes[0].y).not.toBe(100)
   })
+
+  it('clamps positions within bounds', () => {
+    const nodes: (TopologyNode & { vx: number; vy: number })[] = [
+      { id: 'a', label: 'A', x: -50, y: -50, type: 'core', vx: -20, vy: -20 },
+    ]
+    applyPhysics(nodes, [], 0.85, { width: 400, height: 300, padding: 30 })
+    expect(nodes[0].x).toBeGreaterThanOrEqual(30)
+    expect(nodes[0].y).toBeGreaterThanOrEqual(30)
+  })
+
+  it('caps velocity to prevent explosion', () => {
+    const nodes: (TopologyNode & { vx: number; vy: number })[] = [
+      { id: 'a', label: 'A', x: 100, y: 100, type: 'primary', vx: 0, vy: 0 },
+      { id: 'b', label: 'B', x: 100.01, y: 100, type: 'primary', vx: 0, vy: 0 },
+    ]
+    applyPhysics(nodes, [], 0.85)
+    const speed = Math.sqrt(nodes[0].vx ** 2 + nodes[0].vy ** 2)
+    expect(speed).toBeLessThanOrEqual(9) // MAX_VELOCITY = 8, small margin for drift
+  })
 })
 
 /* ── hitTestNode ─────────────────────── */

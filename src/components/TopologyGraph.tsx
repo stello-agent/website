@@ -94,14 +94,19 @@ export function computeTransform(
 
 type PhysicsNode = TopologyNode & { vx: number; vy: number }
 
+const MAX_VELOCITY = 8
+const MIN_DIST = 30 // prevent extreme forces when overlapping
+
 export function applyPhysics(
   nodes: PhysicsNode[],
   edges: TopologyEdge[],
   damping: number,
+  bounds?: { width: number; height: number; padding: number },
 ) {
-  const REPULSION = 800
-  const SPRING_K = 0.005
-  const SPRING_REST = 120
+  const REPULSION = 5000
+  const SPRING_K = 0.008
+  const SPRING_REST = 80
+  const DRIFT = 0.02
 
   // Repulsion (inverse-square)
   for (let i = 0; i < nodes.length; i++) {
@@ -110,7 +115,12 @@ export function applyPhysics(
       const b = nodes[j]
       let dx = b.x - a.x
       let dy = b.y - a.y
-      const distSq = dx * dx + dy * dy + 1
+      // Jitter overlapping nodes apart
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        dx = (Math.random() - 0.5) * 2
+        dy = (Math.random() - 0.5) * 2
+      }
+      const distSq = Math.max(dx * dx + dy * dy, MIN_DIST * MIN_DIST)
       const dist = Math.sqrt(distSq)
       const force =
         REPULSION /
@@ -143,12 +153,35 @@ export function applyPhysics(
     b.vy -= fy
   }
 
-  // Damping + position update
+  // Damping + drift + velocity cap + position update + boundary clamping
   for (const node of nodes) {
+    // Tiny random drift for "breathing"
+    node.vx += (Math.random() - 0.5) * DRIFT
+    node.vy += (Math.random() - 0.5) * DRIFT
+
     node.vx *= damping
     node.vy *= damping
+
+    // Clamp velocity
+    const speed = Math.sqrt(node.vx * node.vx + node.vy * node.vy)
+    if (speed > MAX_VELOCITY) {
+      node.vx = (node.vx / speed) * MAX_VELOCITY
+      node.vy = (node.vy / speed) * MAX_VELOCITY
+    }
+
+    // NaN guard
+    if (!isFinite(node.vx)) node.vx = 0
+    if (!isFinite(node.vy)) node.vy = 0
+
     node.x += node.vx
     node.y += node.vy
+
+    // Boundary clamping
+    if (bounds) {
+      const p = bounds.padding
+      node.x = Math.max(p, Math.min(bounds.width - p, node.x))
+      node.y = Math.max(p, Math.min(bounds.height - p, node.y))
+    }
   }
 }
 
@@ -184,20 +217,24 @@ export function TopologyGraph({
   const animRef = useRef<number>(0)
   const timeRef = useRef(0)
 
-  // Physics state: clone nodes with velocity
+  // Physics state: nodes in CANVAS coordinates (mapped once at init)
   const physicsNodes = useRef<PhysicsNode[]>([])
   const edgesRef = useRef(edges)
   const activeGroupRef = useRef(activeGroup)
   const dragRef = useRef<{ nodeId: string; offsetX: number; offsetY: number } | null>(null)
+  const didDragRef = useRef(false)
 
-  // Initialize physics nodes when input nodes change
+  // Initialize: map logical coords → canvas coords once
   useEffect(() => {
+    const t = computeTransform(nodes, width, height, 52)
     physicsNodes.current = nodes.map((n) => ({
       ...n,
+      x: n.x * t.sx + t.ox,
+      y: n.y * t.sy + t.oy,
       vx: 0,
       vy: 0,
     }))
-  }, [nodes])
+  }, [nodes, width, height])
 
   edgesRef.current = edges
   activeGroupRef.current = activeGroup
@@ -223,17 +260,6 @@ export function TopologyGraph({
     [],
   )
 
-  // Canvas → node coordinate helpers
-  const canvasToNode = useCallback(
-    (cx: number, cy: number, transform: { sx: number; ox: number; sy: number; oy: number }) => {
-      return {
-        x: (cx - transform.ox) / transform.sx,
-        y: (cy - transform.oy) / transform.sy,
-      }
-    },
-    [],
-  )
-
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -245,6 +271,8 @@ export function TopologyGraph({
     canvas.height = height * dpr
     ctx.scale(dpr, dpr)
 
+    const physicsBounds = { width, height, padding: 30 }
+
     const draw = () => {
       timeRef.current += 0.01
       const t = timeRef.current
@@ -254,30 +282,24 @@ export function TopologyGraph({
         return
       }
 
-      // Apply physics (skip for dragged node)
-      if (!dragRef.current) {
-        applyPhysics(pNodes, edgesRef.current, 0.85)
-      } else {
-        // Still apply physics but pin the dragged node
-        const dragId = dragRef.current.nodeId
+      // Apply physics — pin dragged node
+      const dragId = dragRef.current?.nodeId
+      if (dragId) {
         const dragNode = pNodes.find((n) => n.id === dragId)
         const savedX = dragNode?.x ?? 0
         const savedY = dragNode?.y ?? 0
-        applyPhysics(pNodes, edgesRef.current, 0.85)
+        applyPhysics(pNodes, edgesRef.current, 0.85, physicsBounds)
         if (dragNode) {
           dragNode.x = savedX
           dragNode.y = savedY
           dragNode.vx = 0
           dragNode.vy = 0
         }
+      } else {
+        applyPhysics(pNodes, edgesRef.current, 0.85, physicsBounds)
       }
 
-      // Compute transform from current physics positions
-      const transform = computeTransform(pNodes, width, height, 52)
-
-      const tx = (x: number) => x * transform.sx + transform.ox
-      const ty = (y: number) => y * transform.sy + transform.oy
-
+      // Nodes are already in canvas coordinates — draw directly
       ctx.clearRect(0, 0, width, height)
 
       const nodeMap = new Map(pNodes.map((n) => [n.id, n]))
@@ -293,8 +315,8 @@ export function TopologyGraph({
         const edgeHL = fromHL && toHL
 
         ctx.beginPath()
-        ctx.moveTo(tx(from.x), ty(from.y))
-        ctx.lineTo(tx(to.x), ty(to.y))
+        ctx.moveTo(from.x, from.y)
+        ctx.lineTo(to.x, to.y)
 
         if (edge.style === 'dashed') {
           ctx.setLineDash([5, 3])
@@ -324,8 +346,8 @@ export function TopologyGraph({
         const r = NODE_SIZES[node.type]
         const color = getNodeColor(node)
         const alpha = hl ? 1 : 0.18
-        const nx = tx(node.x)
-        const ny = ty(node.y)
+        const nx = node.x
+        const ny = node.y
 
         // Glow
         if (hl && node.type !== 'decorative') {
@@ -393,16 +415,16 @@ export function TopologyGraph({
     }
   }, [width, height, getNodeColor, isHighlighted, isLight])
 
-  /* ── Mouse interaction ─────────────── */
+  /* ── Mouse interaction (all in canvas space) ── */
 
-  const getMousePos = useCallback(
+  const getCanvasPos = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const rect = canvasRef.current!.getBoundingClientRect()
-      const scaleX = width / rect.width
-      const scaleY = height / rect.height
+      const canvas = canvasRef.current
+      if (!canvas) return { x: 0, y: 0 }
+      const rect = canvas.getBoundingClientRect()
       return {
-        canvasX: (e.clientX - rect.left) * scaleX,
-        canvasY: (e.clientY - rect.top) * scaleY,
+        x: (e.clientX - rect.left) * (width / rect.width),
+        y: (e.clientY - rect.top) * (height / rect.height),
       }
     },
     [width, height],
@@ -410,60 +432,50 @@ export function TopologyGraph({
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const { canvasX, canvasY } = getMousePos(e)
-      const pNodes = physicsNodes.current
-      const transform = computeTransform(pNodes, width, height, 52)
-      const { x: nx, y: ny } = canvasToNode(canvasX, canvasY, transform)
-      const hit = hitTestNode(pNodes, nx, ny)
+      const pos = getCanvasPos(e)
+      const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
       if (hit) {
-        dragRef.current = { nodeId: hit.id, offsetX: nx - hit.x, offsetY: ny - hit.y }
-        const pNode = pNodes.find((n) => n.id === hit.id)
-        if (pNode) {
-          pNode.vx = 0
-          pNode.vy = 0
-        }
+        dragRef.current = { nodeId: hit.id, offsetX: pos.x - hit.x, offsetY: pos.y - hit.y }
+        didDragRef.current = false
+        const pNode = physicsNodes.current.find((n) => n.id === hit.id)
+        if (pNode) { pNode.vx = 0; pNode.vy = 0 }
       }
     },
-    [getMousePos, width, height, canvasToNode],
+    [getCanvasPos],
   )
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       if (!dragRef.current) return
-      const { canvasX, canvasY } = getMousePos(e)
-      const pNodes = physicsNodes.current
-      const transform = computeTransform(pNodes, width, height, 52)
-      const { x: nx, y: ny } = canvasToNode(canvasX, canvasY, transform)
-      const pNode = pNodes.find((n) => n.id === dragRef.current!.nodeId)
+      didDragRef.current = true
+      const pos = getCanvasPos(e)
+      const pNode = physicsNodes.current.find((n) => n.id === dragRef.current!.nodeId)
       if (pNode) {
-        pNode.x = nx - dragRef.current.offsetX
-        pNode.y = ny - dragRef.current.offsetY
+        pNode.x = pos.x - dragRef.current.offsetX
+        pNode.y = pos.y - dragRef.current.offsetY
+        pNode.vx = 0
+        pNode.vy = 0
       }
     },
-    [getMousePos, width, height, canvasToNode],
+    [getCanvasPos],
   )
 
-  const handleMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      if (dragRef.current) {
-        dragRef.current = null
-        return
-      }
-    },
-    [],
-  )
+  const handleMouseUp = useCallback(() => {
+    if (dragRef.current) {
+      dragRef.current = null
+    }
+  }, [])
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
+      // Skip click if we just dragged
+      if (didDragRef.current) { didDragRef.current = false; return }
       if (!onNodeClick || highlightMode !== 'click') return
-      const { canvasX, canvasY } = getMousePos(e)
-      const pNodes = physicsNodes.current
-      const transform = computeTransform(pNodes, width, height, 52)
-      const { x: nx, y: ny } = canvasToNode(canvasX, canvasY, transform)
-      const hit = hitTestNode(pNodes, nx, ny)
+      const pos = getCanvasPos(e)
+      const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
       if (hit) onNodeClick(hit)
     },
-    [onNodeClick, highlightMode, getMousePos, width, height, canvasToNode],
+    [onNodeClick, highlightMode, getCanvasPos],
   )
 
   return (

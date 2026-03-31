@@ -1,60 +1,71 @@
-export const heroSlogans = [
-  '把对话，变成认知拓扑网络',
-  '用 AI Native 的方式认识世界',
-  '你的思维正在发散成长！别让线性对话限制了它！',
-  '多分支并行探索，全局意识自动整合',
-]
+// src/data/heroData.ts
+// Hero section data — cards, topology nodes/edges, slogans
+import type { TopologyNode, TopologyEdge } from '../components/TopologyGraph'
 
 export interface HeroCard {
   id: string
-  title: string
-  content: string
-  highlight: string
+  title: { en: string; zh: string }
+  content: { en: string; zh: string }
+  highlight: { en: string; zh: string }
   group: 'problem' | 'what' | 'build'
+}
+
+export const GROUP_COLORS: Record<string, string> = {
+  problem: '#6b7280',
+  what: '#22c55e',
+  build: '#a855f7',
 }
 
 export const heroCards: HeroCard[] = [
   {
     id: 'problem',
-    title: '线性对话正在拖垮你和 AI',
-    content:
-      '你是否会碰到：话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
-    highlight: '你需要的不是更强的模型，而是更好的协作方式。',
+    title: {
+      en: 'Linear chat is dragging you and AI down',
+      zh: '线性对话正在拖垮你和 AI',
+    },
+    content: {
+      en: 'Topics diverge and pollute each other in a single window. Close the page and everything is gone.',
+      zh: '话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
+    },
+    highlight: {
+      en: "You don't need a stronger model — you need a better way to collaborate.",
+      zh: '你需要的不是更强的模型，而是更好的协作方式。',
+    },
     group: 'problem',
   },
   {
     id: 'what',
-    title: '首个 Agent 认知拓扑引擎',
-    content:
-      '话题分叉时自动拆出独立分支，每个方向独立深入互不干扰。三层记忆帮你记住一切，全局意识层帮你发现分支之间的矛盾。',
-    highlight: '关掉页面，结构还在。',
+    title: {
+      en: 'The first Agent Cognitive Topology Engine',
+      zh: '首个 Agent 认知拓扑引擎',
+    },
+    content: {
+      en: 'Topics auto-branch into isolated Sessions. Three-layer memory remembers everything. Global awareness detects cross-branch conflicts.',
+      zh: '话题分叉时自动拆出独立分支，每个方向独立深入互不干扰。三层记忆帮你记住一切，全局意识层帮你发现分支之间的矛盾。',
+    },
+    highlight: {
+      en: 'Close the page — the structure stays.',
+      zh: '关掉页面，结构还在。',
+    },
     group: 'what',
   },
   {
     id: 'build',
-    title: '构建下一代 Agent 应用',
-    content:
-      '给你的 Agent 加上分支对话、分级记忆和跨分支洞察。Session 管分支，Skill 管能力，Tool 管执行。',
-    highlight: '从单 Session 到完整拓扑，渐进式接入。',
+    title: {
+      en: 'Build next-gen Agent applications',
+      zh: '构建下一代 Agent 应用',
+    },
+    content: {
+      en: 'Add branching conversations, layered memory and cross-branch insights to your Agent. Session manages branches, Skill manages capabilities, Tool manages execution.',
+      zh: '给你的 Agent 加上分支对话、分级记忆和跨分支洞察。Session 管分支，Skill 管能力，Tool 管执行。',
+    },
+    highlight: {
+      en: 'From a single Session to a full topology — incremental integration.',
+      zh: '从单 Session 到完整拓扑，渐进式接入。',
+    },
     group: 'build',
   },
 ]
-
-export interface TopologyNode {
-  id: string
-  label: string
-  x: number
-  y: number
-  type: 'core' | 'primary' | 'child' | 'decorative'
-  group?: string
-  parentId?: string
-}
-
-export interface TopologyEdge {
-  from: string
-  to: string
-  style: 'solid' | 'dashed' | 'thin-dashed'
-}
 
 export const heroNodes: TopologyNode[] = [
   // Core

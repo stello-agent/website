@@ -1,6 +1,6 @@
 // src/components/CardStack.tsx
 import type { CSSProperties } from 'react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CODE_SNIPPETS } from '../data/codeContent'
 import { CodeEditor } from './CodeEditor'
 import './CardStack.css'
@@ -15,21 +15,36 @@ interface MemoryCard {
 
 interface Props {
   cards: MemoryCard[]
+  activeIndex?: number
+  onActiveChange?: (index: number) => void
 }
 
 // CardStack 渲染三层记忆卡片堆叠 + Monaco 风格编辑器
-export function CardStack({ cards }: Props) {
+export function CardStack({ cards, activeIndex, onActiveChange }: Props) {
   const [order, setOrder] = useState([0, 1, 2])
   const [frontKey, setFrontKey] = useState(0)
+
+  // Controlled: when activeIndex changes externally, rotate to show that card
+  useEffect(() => {
+    if (activeIndex == null) return
+    setOrder((prev) => {
+      if (prev[0] === activeIndex) return prev
+      // Rotate so activeIndex is at front
+      const idx = prev.indexOf(activeIndex)
+      if (idx === -1) return prev
+      return [...prev.slice(idx), ...prev.slice(0, idx)]
+    })
+    setFrontKey((k) => k + 1)
+  }, [activeIndex])
 
   const prev = () => {
     setOrder((prev) => {
       const next = [...prev]
       const last = next.pop()
-      if (last === undefined) {
-        return prev
-      }
-      return [last, ...next]
+      if (last === undefined) return prev
+      const newOrder = [last, ...next]
+      onActiveChange?.(newOrder[0])
+      return newOrder
     })
     setFrontKey((k) => k + 1)
   }
@@ -37,7 +52,9 @@ export function CardStack({ cards }: Props) {
   const next = () => {
     setOrder((prev) => {
       const [first, ...rest] = prev
-      return [...rest, first]
+      const newOrder = [...rest, first]
+      onActiveChange?.(newOrder[0])
+      return newOrder
     })
     setFrontKey((k) => k + 1)
   }
