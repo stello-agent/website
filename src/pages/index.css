@@ -26,9 +26,9 @@
 
 /* Dark theme */
 :root[data-theme="dark"] {
-  --bg: #06080f;
-  --bg-elevated: #0c1228;
-  --bg-card: #080b18;
+  --bg: #0a0e1a;
+  --bg-elevated: #10141f;
+  --bg-card: #10141f;
   --text-strong: #e8f0ff;
   --text-muted: #7a8fa8;
   --text-faint: #445566;
