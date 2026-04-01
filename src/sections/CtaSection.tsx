@@ -61,7 +61,7 @@ export function CtaSection() {
 
         {/* Action buttons */}
         <div className="cta-actions">
-          <a className="hero-btn hero-btn--primary" href="https://stello-agent.github.io/docs" target="_blank" rel="noopener noreferrer">
+          <a className="hero-btn hero-btn--primary" href="/docs/getting-started/introduction">
             {t(s.quickStart.en, s.quickStart.zh)}
           </a>
           <a
