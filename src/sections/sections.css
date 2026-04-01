@@ -265,6 +265,98 @@
   letter-spacing: -0.01em;
 }
 
+.hero-typewriter--large {
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  min-height: 2.2em;
+}
+
+/* Landing hero: centered vertically, no lower section */
+.hero-v5--landing {
+  justify-content: center;
+  gap: clamp(24px, 4vh, 56px);
+}
+
+/* Overview page: topo on top, cards in a row below */
+.hero-v5--overview {
+  justify-content: center;
+  padding-top: 80px;
+  padding-bottom: 60px;
+  gap: clamp(20px, 3vh, 40px);
+}
+
+.overview-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overview-topo canvas {
+  max-width: 560px;
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 560 / 420;
+}
+
+.overview-cards {
+  display: flex;
+  gap: 16px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.overview-card {
+  flex: 1;
+  padding: clamp(14px, 1.6vh, 20px) clamp(16px, 1.5vw, 22px);
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  text-align: left;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.overview-card:hover {
+  background: var(--hero-card-active);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.overview-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.overview-card-desc {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.overview-card-highlight {
+  border-left: 2px solid var(--text-faint);
+  padding-left: 10px;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+@media (max-width: 900px) {
+  .overview-cards {
+    flex-direction: column;
+    max-width: 480px;
+  }
+
+  .overview-topo canvas {
+    max-width: 360px;
+  }
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -359,7 +451,8 @@
   padding: clamp(14px, 1.8vh, 22px) clamp(16px, 2vw, 26px);
   border-radius: 14px;
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   text-align: left;
   transition: all 0.3s ease;
   cursor: default;
@@ -370,6 +463,8 @@
 
 .hero-v5-card:hover {
   background: var(--hero-card-active);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .hero-v5-card-title {
@@ -407,9 +502,9 @@
 
 .hero-v5-topo canvas {
   width: 100% !important;
-  height: 100% !important;
-  max-width: 680px;
-  max-height: 500px;
+  height: auto !important;
+  aspect-ratio: 480 / 280;
+  max-width: 480px;
 }
 
 @media (max-width: 900px) {

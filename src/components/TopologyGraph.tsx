@@ -1,6 +1,6 @@
 // src/components/TopologyGraph.tsx
 // Canvas-based topology graph with group highlighting, physics simulation, and drag support.
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 /* ── Types ───────────────────────────── */
 
@@ -351,10 +351,10 @@ export function TopologyGraph({
         if (node.type !== 'decorative' || hl) {
           ctx.font =
             node.type === 'core'
-              ? 'bold 40px "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif'
+              ? 'bold 28px "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif'
               : node.type === 'primary'
-                ? '600 25px "Songti SC", "STSong", "SimSun", "宋体", serif'
-                : '15px "Songti SC", "STSong", "SimSun", "宋体", serif'
+                ? '600 17px "Songti SC", "STSong", "SimSun", "宋体", serif'
+                : '11px "Songti SC", "STSong", "SimSun", "宋体", serif'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
 
@@ -463,6 +463,7 @@ export function TopologyGraph({
   return (
     <canvas
       ref={canvasRef}
+      data-topo="true"
       style={{
         width,
         height,
