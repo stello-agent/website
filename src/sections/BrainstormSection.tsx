@@ -1,5 +1,5 @@
 // src/sections/BrainstormSection.tsx
-// Interactive capabilities section: click topology nodes → switch code tabs
+// Screen 2: Core Capabilities — left topology + right code tab cards
 import { useState } from 'react'
 import { TopologyGraph } from '../components/TopologyGraph'
 import type { TopologyNode } from '../components/TopologyGraph'
@@ -23,10 +23,36 @@ export function BrainstormSection() {
   const [activeTab, setActiveTab] = useState(0)
   const activeCap = capabilities.find((c) => c.id === activeId) ?? capabilities[0]
 
-  const [topoRef, topoVisible] = useIntersectionObserver<HTMLDivElement>()
   const [panelRef, panelVisible] = useIntersectionObserver<HTMLDivElement>()
 
+  // Build a map from child node id to { capId, tabIndex }
+  const childNodeMap = new Map<string, { capId: string; tabIndex: number }>()
+  for (const node of capabilityNodes) {
+    if (node.type === 'child' && node.group) {
+      const cap = capabilities.find((c) => c.id === node.group)
+      if (cap) {
+        const siblings = capabilityNodes.filter(
+          (n) => n.type === 'child' && n.group === node.group
+        )
+        const tabIndex = siblings.indexOf(node)
+        if (tabIndex >= 0 && tabIndex < cap.tabs.length) {
+          childNodeMap.set(node.id, { capId: cap.id, tabIndex })
+        }
+      }
+    }
+  }
+
   const handleNodeClick = (node: TopologyNode) => {
+    // Check if it's a child node first (for tab switching)
+    const childMapping = childNodeMap.get(node.id)
+    if (childMapping) {
+      if (activeId !== childMapping.capId) {
+        setActiveId(childMapping.capId)
+      }
+      setActiveTab(childMapping.tabIndex)
+      return
+    }
+    // Otherwise check if it's a primary node
     if (!node.group) return
     const cap = capabilities.find((c) => c.id === node.group)
     if (cap) {
@@ -35,12 +61,19 @@ export function BrainstormSection() {
     }
   }
 
+  // Determine which child node is selected for topology highlighting
+  const activeChildNodes = capabilityNodes.filter(
+    (n) => n.type === 'child' && n.group === activeId
+  )
+  const selectedNodeId = activeChildNodes[activeTab]?.id ?? null
+
   return (
     <section className="topo-section topo-section--left">
         <TopologyGraph
           nodes={capabilityNodes}
           edges={capabilityEdges}
           activeGroup={activeId}
+          selectedNodeId={selectedNodeId}
           highlightMode="click"
           onNodeClick={handleNodeClick}
           groupColors={GROUP_COLORS}
@@ -55,11 +88,8 @@ export function BrainstormSection() {
         style={{ transitionDelay: '100ms' }}
       >
         <h3 className="cap-panel-title">
-          {t(activeCap.title.en, activeCap.title.zh)}
-        </h3>
-        <p className="cap-panel-subtitle" style={{ color: GROUP_COLORS[activeId] }}>
           {t(activeCap.subtitle.en, activeCap.subtitle.zh)}
-        </p>
+        </h3>
         <p className="cap-panel-desc">
           {t(activeCap.description.en, activeCap.description.zh)}
         </p>

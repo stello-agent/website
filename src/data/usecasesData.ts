@@ -1,5 +1,5 @@
 // src/data/usecasesData.ts
-// Use cases data with interactive topology — ported from prototype with i18n
+// Screen 4: Use cases with interactive topology — updated per PRD v5
 import type { TopologyNode, TopologyEdge } from '../components/TopologyGraph'
 
 export interface UseCaseItem {
@@ -16,8 +16,8 @@ export const usecases: UseCaseItem[] = [
     title: { en: 'Deep Consulting', zh: '深度咨询' },
     subtitle: { en: 'Multi-dimensional analysis, zero contamination', zh: '多维度分析，互不污染' },
     description: {
-      en: 'Making a major decision across legal, financial, and technical dimensions? Each dimension gets its own Session for deep analysis. Main Session auto-synthesizes conclusions and surfaces cross-dimension conflicts.',
-      zh: '你在做一个重大决策，需要同时从法务、财务、技术三个角度深入分析。每个维度拆成独立 Session 各自深入，Main Session 自动汇总三个方向的结论，发现维度之间的矛盾。',
+      en: 'Making a major decision that requires simultaneous deep analysis from legal, financial, and technical angles? With Stello, each dimension branches into its own Session for in-depth exploration. Main Session auto-synthesizes conclusions from all three directions and surfaces cross-dimension conflicts — like when legal risks would overturn the financial plan. Each dimension maintains professional depth without dilution from other topics, and cross-dimension conflicts are surfaced by AI proactively.',
+      zh: '你在做一个重大决策，需要同时从法务、财务、技术三个角度深入分析。用 Stello，每个维度拆成独立 Session 各自深入，Main Session 自动汇总三个方向的结论，发现维度之间的矛盾——比如法务风险会推翻财务方案。各维度保持专业深度不被其他话题稀释，跨维度矛盾不靠你自己发现，AI 主动告诉你。',
     },
     children: [
       { en: 'Business Planning', zh: '商业规划' },
@@ -30,8 +30,8 @@ export const usecases: UseCaseItem[] = [
     title: { en: 'Knowledge Exploration', zh: '知识探索' },
     subtitle: { en: 'Parallel exploration, auto-build knowledge maps', zh: '并行探索，自动构建知识地图' },
     description: {
-      en: 'Researching a new field — tech principles, market landscape, competitor dynamics. Each direction gets its own Session. Come back days later, pick up from any node in the star map.',
-      zh: '你在调研一个新领域，同时要了解技术原理、市场格局、竞品动态。每个研究方向各开一个 Session 独立深挖，几天后从星空图任意节点继续。',
+      en: 'Researching a new field — tech principles, market landscape, competitor dynamics all at once. With Stello, each research direction gets its own Session for independent deep diving. The cognitive topology naturally forms a knowledge structure. Come back days later, pick up from any node in the star map — no extra organization needed. The research process itself becomes the knowledge map.',
+      zh: '你在调研一个新领域，同时要了解技术原理、市场格局、竞品动态。用 Stello，每个研究方向各开一个 Session 独立深挖，认知拓扑自然形成知识结构。几天后回来，从星空图任意节点继续，不需要额外整理，研究过程本身就是知识地图。',
     },
     children: [
       { en: 'Deep Learning', zh: '深入学习' },
@@ -44,8 +44,8 @@ export const usecases: UseCaseItem[] = [
     title: { en: 'System Building', zh: '体系构建' },
     subtitle: { en: 'Build from scratch, crystal-clear hierarchy', zh: '从零搭建，层级清晰' },
     description: {
-      en: 'Building a course curriculum, product architecture, or knowledge framework. Top-level goals auto-split into sub-module Sessions. Main Session monitors structural completeness across modules.',
-      zh: '你要搭建一套完整的课程体系、产品架构或知识框架。顶层目标自动拆分为子模块 Session，Main Session 持续监控整体结构的完整性。',
+      en: 'Building a complete course curriculum, product architecture, or knowledge framework where modules have hierarchical relationships and dependencies. With Stello, top-level goals auto-split into sub-module Sessions, each advancing its details independently. Main Session continuously monitors overall structural completeness, discovering gaps and conflicts between modules. The more you build, the clearer it gets — never losing the big picture in the details.',
+      zh: '你要搭建一套完整的课程体系、产品架构或知识框架，每个模块之间有层级关系和依赖。用 Stello，顶层目标自动拆分为子模块 Session，每个模块独立推进细节。Main Session 持续监控整体结构的完整性，发现模块之间的缺口和冲突。体系越搭越清晰，不会在细节里迷失全局。',
     },
     children: [
       { en: 'Course Design', zh: '课程体系' },
@@ -58,8 +58,8 @@ export const usecases: UseCaseItem[] = [
     title: { en: 'Creative Work', zh: '创意创作' },
     subtitle: { en: 'Parallel concepts, global consistency', zh: '多方案并行，全局一致' },
     description: {
-      en: 'Exploring three different creative directions for brand strategy. Each direction branches independently. Main Session cross-compares to ensure core tone stays consistent.',
-      zh: '你在做品牌策划，同时探索三个不同的创意方向。每个方向各开一个分支并行探索，Main Session 跨方案比对，确保核心调性一致。',
+      en: 'Working on brand strategy, exploring three different creative directions simultaneously, planning to pick one or merge them. With Stello, each creative direction branches independently for parallel exploration, preserving all possibilities. Main Session cross-compares across concepts to ensure core tone stays consistent. Ideas aren\'t prematurely discarded, divergence is thorough before convergence, and global consistency is backed by AI.',
+      zh: '你在做品牌策划，同时探索三个不同的创意方向，最终选一个或融合。用 Stello，每个创意方向各开一个分支并行探索，保留所有可能性。Main Session 跨方案比对，确保核心调性一致。创意不被过早淘汰，发散够充分再收敛，全局一致性有 AI 兜底。',
     },
     children: [
       { en: 'Brand Strategy', zh: '品牌策划' },
@@ -72,8 +72,8 @@ export const usecases: UseCaseItem[] = [
     title: { en: 'Work Collaboration', zh: '办公协作' },
     subtitle: { en: 'AI surfaces cross-task dependencies', zh: 'AI 主动发现跨任务依赖' },
     description: {
-      en: 'Five parallel tasks across different projects. Each runs in an isolated Session. Main Session scans all tasks, surfacing hidden cross-task dependencies you might have missed.',
-      zh: '你手头有五个并行推进的工作任务。每个任务在独立 Session 推进，Main Session 主动扫描所有任务，发现你没注意到的跨任务依赖。',
+      en: 'Five parallel tasks across different projects, occasionally with cross-dependencies. With Stello, each task progresses in an isolated Session with fully separated context. Main Session proactively scans all tasks, surfacing hidden cross-task dependencies and blind spots you might have missed. Zero cognitive overhead switching tasks, and cross-task blind spots get AI-pushed reminders.',
+      zh: '你手头有五个并行推进的工作任务，分属不同项目，偶尔有交叉依赖。用 Stello，每个任务在独立 Session 推进，上下文完全隔离。Main Session 主动扫描所有任务，发现你没注意到的跨任务依赖和遗漏。切换任务零心智负担，跨任务的盲点 AI 主动推送提醒。',
     },
     children: [
       { en: 'Product Build', zh: '产品构建' },
@@ -84,11 +84,11 @@ export const usecases: UseCaseItem[] = [
 ]
 
 export const UC_GROUP_COLORS: Record<string, string> = {
-  consulting: '#a855f7',
-  exploration: '#22c55e',
-  system: '#3b82f6',
-  creative: '#f59e0b',
-  collaboration: '#ec4899',
+  consulting: '#9b7b6b',
+  exploration: '#7b9b8b',
+  system: '#6b7b8d',
+  creative: '#b0956b',
+  collaboration: '#8b7b9b',
 }
 
 export const usecaseNodes: TopologyNode[] = [
@@ -124,6 +124,9 @@ export const usecaseNodes: TopologyNode[] = [
   { id: 'd-research', label: '研究', x: 560, y: 420, type: 'decorative' },
   { id: 'd-plan', label: '规划', x: 350, y: 460, type: 'decorative' },
   { id: 'd-design', label: '设计', x: 150, y: 460, type: 'decorative' },
+  { id: 'd-collab', label: '协同', x: 420, y: 0, type: 'decorative' },
+  { id: 'd-report', label: '报告', x: 80, y: 0, type: 'decorative' },
+  { id: 'd-decision', label: '决策', x: 560, y: 300, type: 'decorative' },
 ]
 
 export const usecaseEdges: TopologyEdge[] = [
@@ -160,4 +163,7 @@ export const usecaseEdges: TopologyEdge[] = [
   { from: 'd-research', to: 'uc-explore', style: 'thin-dashed' },
   { from: 'd-plan', to: 'uc-system', style: 'thin-dashed' },
   { from: 'd-design', to: 'uc-creative', style: 'thin-dashed' },
+  { from: 'd-collab', to: 'uc-collab', style: 'thin-dashed' },
+  { from: 'd-report', to: 'uc-creative', style: 'thin-dashed' },
+  { from: 'd-decision', to: 'uc-explore', style: 'thin-dashed' },
 ]

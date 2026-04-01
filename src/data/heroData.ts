@@ -11,9 +11,9 @@ export interface HeroCard {
 }
 
 export const GROUP_COLORS: Record<string, string> = {
-  problem: '#6b7280',
-  what: '#22c55e',
-  build: '#a855f7',
+  problem: '#9a8e80',
+  what: '#7b9b8b',
+  build: '#9b7b6b',
 }
 
 export const heroCards: HeroCard[] = [
@@ -24,8 +24,8 @@ export const heroCards: HeroCard[] = [
       zh: '线性对话正在拖垮你和 AI',
     },
     content: {
-      en: 'Topics diverge and pollute each other in a single window. Close the page and everything is gone.',
-      zh: '话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
+      en: 'Ever had this happen? Topics diverge and pollute each other crammed into one window. Close the page and everything is gone — try to pick up days later and you can\'t remember a thing.',
+      zh: '你是否会碰到：话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
     },
     highlight: {
       en: "You don't need a stronger model — you need a better way to collaborate.",
@@ -40,7 +40,7 @@ export const heroCards: HeroCard[] = [
       zh: '首个 Agent 认知拓扑引擎',
     },
     content: {
-      en: 'Topics auto-branch into isolated Sessions. Three-layer memory remembers everything. Global awareness detects cross-branch conflicts.',
+      en: 'When topics diverge, independent branches are automatically created — each direction goes deep without interference. Three-layer memory remembers everything. Global awareness detects cross-branch conflicts.',
       zh: '话题分叉时自动拆出独立分支，每个方向独立深入互不干扰。三层记忆帮你记住一切，全局意识层帮你发现分支之间的矛盾。',
     },
     highlight: {
@@ -60,7 +60,7 @@ export const heroCards: HeroCard[] = [
       zh: '给你的 Agent 加上分支对话、分级记忆和跨分支洞察。Session 管分支，Skill 管能力，Tool 管执行。',
     },
     highlight: {
-      en: 'From a single Session to a full topology — incremental integration.',
+      en: 'From a single Session to a full topology — incremental adoption.',
       zh: '从单 Session 到完整拓扑，渐进式接入。',
     },
     group: 'build',
@@ -69,26 +69,26 @@ export const heroCards: HeroCard[] = [
 
 export const heroNodes: TopologyNode[] = [
   // Core
-  { id: 'stello', label: 'Stello', x: 300, y: 200, type: 'core' },
-  // Problem group (gray)
-  { id: 'linear', label: '线性对话', x: 480, y: 80, type: 'primary', group: 'problem' },
-  { id: 'context-loss', label: '上下文丢失', x: 520, y: 200, type: 'primary', group: 'problem' },
-  { id: 'forget', label: '结构遗忘', x: 470, y: 320, type: 'primary', group: 'problem' },
-  // What group (green)
-  { id: 'session-topo', label: 'Session 拓扑', x: 130, y: 70, type: 'primary', group: 'what' },
-  { id: 'memory-3', label: '三层记忆', x: 80, y: 200, type: 'primary', group: 'what' },
-  { id: 'global-aware', label: '全局意识', x: 130, y: 330, type: 'primary', group: 'what' },
-  // Build group (purple)
-  { id: 'skill', label: 'Skill 协议', x: 200, y: 400, type: 'primary', group: 'build' },
-  { id: 'tool-call', label: 'Tool 调用', x: 340, y: 400, type: 'primary', group: 'build' },
-  { id: 'agent-build', label: 'Agent 构建', x: 420, y: 400, type: 'primary', group: 'build' },
+  { id: 'stello', label: 'Stello', x: 400, y: 280, type: 'core' },
+  // Problem group (gray) — right side
+  { id: 'linear', label: '线性对话', x: 680, y: 100, type: 'primary', group: 'problem' },
+  { id: 'context-loss', label: '上下文丢失', x: 730, y: 280, type: 'primary', group: 'problem' },
+  { id: 'forget', label: '结构遗忘', x: 660, y: 460, type: 'primary', group: 'problem' },
+  // What group (green) — left side
+  { id: 'session-topo', label: 'Session 拓扑', x: 150, y: 80, type: 'primary', group: 'what' },
+  { id: 'memory-3', label: '三层记忆', x: 70, y: 280, type: 'primary', group: 'what' },
+  { id: 'global-aware', label: '全局意识', x: 150, y: 470, type: 'primary', group: 'what' },
+  // Build group (purple) — bottom
+  { id: 'skill', label: 'Skill 协议', x: 250, y: 560, type: 'primary', group: 'build' },
+  { id: 'tool-call', label: 'Tool 调用', x: 430, y: 560, type: 'primary', group: 'build' },
+  { id: 'agent-build', label: 'Agent 构建', x: 600, y: 560, type: 'primary', group: 'build' },
   // Decorative
-  { id: 'd-branch', label: '分支', x: 560, y: 130, type: 'decorative' },
-  { id: 'd-insight', label: '洞察', x: 40, y: 120, type: 'decorative' },
-  { id: 'd-network', label: '认知网络', x: 30, y: 310, type: 'decorative' },
-  { id: 'd-diverge', label: '思维发散', x: 560, y: 370, type: 'decorative' },
-  { id: 'd-starmap', label: '星空图', x: 200, y: 10, type: 'decorative' },
-  { id: 'd-flow', label: '记忆流动', x: 450, y: 10, type: 'decorative' },
+  { id: 'd-branch', label: '分支', x: 780, y: 170, type: 'decorative' },
+  { id: 'd-insight', label: '洞察', x: 30, y: 140, type: 'decorative' },
+  { id: 'd-network', label: '认知网络', x: 20, y: 430, type: 'decorative' },
+  { id: 'd-diverge', label: '思维发散', x: 780, y: 400, type: 'decorative' },
+  { id: 'd-starmap', label: '星空图', x: 260, y: 20, type: 'decorative' },
+  { id: 'd-flow', label: '记忆流动', x: 560, y: 20, type: 'decorative' },
 ]
 
 export const heroEdges: TopologyEdge[] = [

@@ -39,28 +39,28 @@ const NODE_SIZES: Record<TopologyNode['type'], number> = {
   core: 24,
   primary: 13,
   child: 8,
-  decorative: 5,
+  decorative: 5
 }
 
 const DEFAULT_COLORS: Record<TopologyNode['type'], string> = {
-  core: '#3b82f6',
-  primary: '#a855f7',
-  child: '#22c55e',
-  decorative: '#475569',
+  core: '#8b9bab',
+  primary: '#a8937e',
+  child: '#8bab98',
+  decorative: '#6b7b8a'
 }
 
 const GLOW_COLORS: Record<TopologyNode['type'], string> = {
-  core: 'rgba(59, 130, 246, 0.5)',
-  primary: 'rgba(168, 85, 247, 0.4)',
-  child: 'rgba(34, 197, 94, 0.3)',
-  decorative: 'rgba(71, 85, 105, 0.2)',
+  core: 'rgba(139, 155, 171, 0.45)',
+  primary: 'rgba(168, 147, 126, 0.35)',
+  child: 'rgba(139, 171, 152, 0.3)',
+  decorative: 'rgba(107, 123, 138, 0.15)'
 }
 
 const LIGHT_COLORS: Record<TopologyNode['type'], string> = {
-  core: '#2266ee',
-  primary: '#8844dd',
-  child: '#109980',
-  decorative: '#8899b0',
+  core: '#6b7b8d',
+  primary: '#9b7b6b',
+  child: '#7b9b8b',
+  decorative: '#a8a090'
 }
 
 /* ── Pure utilities (exported for testing) ── */
@@ -69,7 +69,7 @@ export function computeTransform(
   nodes: TopologyNode[],
   canvasW: number,
   canvasH: number,
-  padding = 50,
+  padding = 50
 ) {
   if (nodes.length === 0) return { sx: 1, sy: 1, ox: 0, oy: 0 }
   let minX = Infinity,
@@ -101,11 +101,11 @@ export function applyPhysics(
   nodes: PhysicsNode[],
   edges: TopologyEdge[],
   damping: number,
-  bounds?: { width: number; height: number; padding: number },
+  bounds?: { width: number; height: number; padding: number }
 ) {
   const REPULSION = 5000
-  const SPRING_K = 0.008
-  const SPRING_REST = 80
+  const SPRING_K = 0.006
+  const SPRING_REST = 100
   const DRIFT = 0.02
 
   // Repulsion (inverse-square)
@@ -123,8 +123,7 @@ export function applyPhysics(
       const distSq = Math.max(dx * dx + dy * dy, MIN_DIST * MIN_DIST)
       const dist = Math.sqrt(distSq)
       const force =
-        REPULSION /
-        distSq *
+        (REPULSION / distSq) *
         (a.type === 'decorative' || b.type === 'decorative' ? 0.5 : 1)
       const fx = (dx / dist) * force
       const fy = (dy / dist) * force
@@ -188,11 +187,11 @@ export function applyPhysics(
 export function hitTestNode(
   nodes: TopologyNode[],
   mx: number,
-  my: number,
+  my: number
 ): TopologyNode | null {
   for (const node of nodes) {
     if (node.type === 'decorative') continue
-    const r = NODE_SIZES[node.type] + 10
+    const r = NODE_SIZES[node.type] + 25
     const dx = node.x - mx
     const dy = node.y - my
     if (dx * dx + dy * dy < r * r) return node
@@ -211,7 +210,7 @@ export function TopologyGraph({
   groupColors,
   width = 600,
   height = 460,
-  theme = 'dark',
+  theme = 'dark'
 }: TopologyGraphProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const animRef = useRef<number>(0)
@@ -221,7 +220,11 @@ export function TopologyGraph({
   const physicsNodes = useRef<PhysicsNode[]>([])
   const edgesRef = useRef(edges)
   const activeGroupRef = useRef(activeGroup)
-  const dragRef = useRef<{ nodeId: string; offsetX: number; offsetY: number } | null>(null)
+  const dragRef = useRef<{
+    nodeId: string
+    offsetX: number
+    offsetY: number
+  } | null>(null)
   const didDragRef = useRef(false)
 
   // Initialize: map logical coords → canvas coords once
@@ -232,7 +235,7 @@ export function TopologyGraph({
       x: n.x * t.sx + t.ox,
       y: n.y * t.sy + t.oy,
       vx: 0,
-      vy: 0,
+      vy: 0
     }))
   }, [nodes, width, height])
 
@@ -248,17 +251,14 @@ export function TopologyGraph({
       }
       return isLight ? LIGHT_COLORS[node.type] : DEFAULT_COLORS[node.type]
     },
-    [groupColors, isLight],
+    [groupColors, isLight]
   )
 
-  const isHighlighted = useCallback(
-    (node: TopologyNode) => {
-      if (!activeGroupRef.current) return true
-      if (node.type === 'core') return true
-      return node.group === activeGroupRef.current
-    },
-    [],
-  )
+  const isHighlighted = useCallback((node: TopologyNode) => {
+    if (!activeGroupRef.current) return true
+    if (node.type === 'core') return true
+    return node.group === activeGroupRef.current
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -271,7 +271,7 @@ export function TopologyGraph({
     canvas.height = height * dpr
     ctx.scale(dpr, dpr)
 
-    const physicsBounds = { width, height, padding: 30 }
+    const physicsBounds = { width, height, padding: 100 }
 
     const draw = () => {
       timeRef.current += 0.01
@@ -340,68 +340,38 @@ export function TopologyGraph({
         ctx.setLineDash([])
       }
 
-      // Draw nodes
+      // Draw nodes (text only, no circles)
       for (const node of pNodes) {
         const hl = isHighlighted(node)
-        const r = NODE_SIZES[node.type]
         const color = getNodeColor(node)
-        const alpha = hl ? 1 : 0.18
         const nx = node.x
         const ny = node.y
-
-        // Glow
-        if (hl && node.type !== 'decorative') {
-          const glowR = r * 2.5
-          const gradient = ctx.createRadialGradient(nx, ny, r * 0.5, nx, ny, glowR)
-          gradient.addColorStop(0, GLOW_COLORS[node.type])
-          gradient.addColorStop(1, 'transparent')
-          ctx.beginPath()
-          ctx.arc(nx, ny, glowR, 0, Math.PI * 2)
-          ctx.fillStyle = gradient
-          ctx.fill()
-        }
-
-        // Pulse for core node
-        if (node.type === 'core') {
-          const pulse = Math.sin(t * 2) * 0.15 + 1
-          const pulseR = r * pulse * 1.8
-          const gradient = ctx.createRadialGradient(nx, ny, r, nx, ny, pulseR)
-          gradient.addColorStop(
-            0,
-            isLight ? 'rgba(34, 102, 238, 0.15)' : 'rgba(59, 130, 246, 0.2)',
-          )
-          gradient.addColorStop(1, 'transparent')
-          ctx.beginPath()
-          ctx.arc(nx, ny, pulseR, 0, Math.PI * 2)
-          ctx.fillStyle = gradient
-          ctx.fill()
-        }
-
-        // Node circle
-        ctx.beginPath()
-        ctx.arc(nx, ny, r, 0, Math.PI * 2)
-        ctx.globalAlpha = alpha
-        ctx.fillStyle = color
-        ctx.fill()
-        ctx.globalAlpha = 1
 
         // Label
         if (node.type !== 'decorative' || hl) {
           ctx.font =
             node.type === 'core'
-              ? 'bold 12px "Inter", sans-serif'
+              ? 'bold 40px "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif'
               : node.type === 'primary'
-                ? '11px "Inter", sans-serif'
-                : '9px "Inter", sans-serif'
+                ? '600 25px "Songti SC", "STSong", "SimSun", "宋体", serif'
+                : '15px "Songti SC", "STSong", "SimSun", "宋体", serif'
           ctx.textAlign = 'center'
-          ctx.fillStyle = hl
-            ? isLight
-              ? 'rgba(13, 21, 37, 0.85)'
-              : 'rgba(226, 232, 240, 0.85)'
-            : isLight
-              ? 'rgba(13, 21, 37, 0.25)'
-              : 'rgba(226, 232, 240, 0.2)'
-          ctx.fillText(node.label, nx, ny + r + 14)
+          ctx.textBaseline = 'middle'
+
+          if (hl) {
+            ctx.fillStyle =
+              node.type === 'decorative'
+                ? isLight
+                  ? 'rgba(26, 20, 9, 0.35)'
+                  : 'rgba(226, 232, 240, 0.35)'
+                : color
+          } else {
+            ctx.fillStyle = isLight
+              ? 'rgba(26, 20, 9, 0.2)'
+              : 'rgba(226, 232, 240, 0.15)'
+          }
+
+          ctx.fillText(node.label, nx, ny)
         }
       }
 
@@ -424,10 +394,10 @@ export function TopologyGraph({
       const rect = canvas.getBoundingClientRect()
       return {
         x: (e.clientX - rect.left) * (width / rect.width),
-        y: (e.clientY - rect.top) * (height / rect.height),
+        y: (e.clientY - rect.top) * (height / rect.height)
       }
     },
-    [width, height],
+    [width, height]
   )
 
   const handleMouseDown = useCallback(
@@ -435,13 +405,20 @@ export function TopologyGraph({
       const pos = getCanvasPos(e)
       const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
       if (hit) {
-        dragRef.current = { nodeId: hit.id, offsetX: pos.x - hit.x, offsetY: pos.y - hit.y }
+        dragRef.current = {
+          nodeId: hit.id,
+          offsetX: pos.x - hit.x,
+          offsetY: pos.y - hit.y
+        }
         didDragRef.current = false
         const pNode = physicsNodes.current.find((n) => n.id === hit.id)
-        if (pNode) { pNode.vx = 0; pNode.vy = 0 }
+        if (pNode) {
+          pNode.vx = 0
+          pNode.vy = 0
+        }
       }
     },
-    [getCanvasPos],
+    [getCanvasPos]
   )
 
   const handleMouseMove = useCallback(
@@ -449,7 +426,9 @@ export function TopologyGraph({
       if (!dragRef.current) return
       didDragRef.current = true
       const pos = getCanvasPos(e)
-      const pNode = physicsNodes.current.find((n) => n.id === dragRef.current!.nodeId)
+      const pNode = physicsNodes.current.find(
+        (n) => n.id === dragRef.current!.nodeId
+      )
       if (pNode) {
         pNode.x = pos.x - dragRef.current.offsetX
         pNode.y = pos.y - dragRef.current.offsetY
@@ -457,7 +436,7 @@ export function TopologyGraph({
         pNode.vy = 0
       }
     },
-    [getCanvasPos],
+    [getCanvasPos]
   )
 
   const handleMouseUp = useCallback(() => {
@@ -469,13 +448,16 @@ export function TopologyGraph({
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLCanvasElement>) => {
       // Skip click if we just dragged
-      if (didDragRef.current) { didDragRef.current = false; return }
+      if (didDragRef.current) {
+        didDragRef.current = false
+        return
+      }
       if (!onNodeClick || highlightMode !== 'click') return
       const pos = getCanvasPos(e)
       const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
       if (hit) onNodeClick(hit)
     },
-    [onNodeClick, highlightMode, getCanvasPos],
+    [onNodeClick, highlightMode, getCanvasPos]
   )
 
   return (
@@ -484,7 +466,11 @@ export function TopologyGraph({
       style={{
         width,
         height,
-        cursor: dragRef.current ? 'grabbing' : highlightMode === 'click' ? 'pointer' : 'grab',
+        cursor: dragRef.current
+          ? 'grabbing'
+          : highlightMode === 'click'
+            ? 'pointer'
+            : 'grab'
       }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
