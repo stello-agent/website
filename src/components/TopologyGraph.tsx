@@ -43,24 +43,24 @@ const NODE_SIZES: Record<TopologyNode['type'], number> = {
 }
 
 const DEFAULT_COLORS: Record<TopologyNode['type'], string> = {
-  core: '#3b82f6',
-  primary: '#a855f7',
-  child: '#22c55e',
-  decorative: '#475569',
+  core: '#8b9bab',
+  primary: '#a8937e',
+  child: '#8bab98',
+  decorative: '#6b7b8a',
 }
 
 const GLOW_COLORS: Record<TopologyNode['type'], string> = {
-  core: 'rgba(59, 130, 246, 0.5)',
-  primary: 'rgba(168, 85, 247, 0.4)',
-  child: 'rgba(34, 197, 94, 0.3)',
-  decorative: 'rgba(71, 85, 105, 0.2)',
+  core: 'rgba(139, 155, 171, 0.45)',
+  primary: 'rgba(168, 147, 126, 0.35)',
+  child: 'rgba(139, 171, 152, 0.3)',
+  decorative: 'rgba(107, 123, 138, 0.15)',
 }
 
 const LIGHT_COLORS: Record<TopologyNode['type'], string> = {
-  core: '#2266ee',
-  primary: '#8844dd',
-  child: '#109980',
-  decorative: '#8899b0',
+  core: '#6b7b8d',
+  primary: '#9b7b6b',
+  child: '#7b9b8b',
+  decorative: '#a8a090',
 }
 
 /* ── Pure utilities (exported for testing) ── */
@@ -340,68 +340,35 @@ export function TopologyGraph({
         ctx.setLineDash([])
       }
 
-      // Draw nodes
+      // Draw nodes (text only, no circles)
       for (const node of pNodes) {
         const hl = isHighlighted(node)
-        const r = NODE_SIZES[node.type]
         const color = getNodeColor(node)
-        const alpha = hl ? 1 : 0.18
         const nx = node.x
         const ny = node.y
-
-        // Glow
-        if (hl && node.type !== 'decorative') {
-          const glowR = r * 2.5
-          const gradient = ctx.createRadialGradient(nx, ny, r * 0.5, nx, ny, glowR)
-          gradient.addColorStop(0, GLOW_COLORS[node.type])
-          gradient.addColorStop(1, 'transparent')
-          ctx.beginPath()
-          ctx.arc(nx, ny, glowR, 0, Math.PI * 2)
-          ctx.fillStyle = gradient
-          ctx.fill()
-        }
-
-        // Pulse for core node
-        if (node.type === 'core') {
-          const pulse = Math.sin(t * 2) * 0.15 + 1
-          const pulseR = r * pulse * 1.8
-          const gradient = ctx.createRadialGradient(nx, ny, r, nx, ny, pulseR)
-          gradient.addColorStop(
-            0,
-            isLight ? 'rgba(34, 102, 238, 0.15)' : 'rgba(59, 130, 246, 0.2)',
-          )
-          gradient.addColorStop(1, 'transparent')
-          ctx.beginPath()
-          ctx.arc(nx, ny, pulseR, 0, Math.PI * 2)
-          ctx.fillStyle = gradient
-          ctx.fill()
-        }
-
-        // Node circle
-        ctx.beginPath()
-        ctx.arc(nx, ny, r, 0, Math.PI * 2)
-        ctx.globalAlpha = alpha
-        ctx.fillStyle = color
-        ctx.fill()
-        ctx.globalAlpha = 1
 
         // Label
         if (node.type !== 'decorative' || hl) {
           ctx.font =
             node.type === 'core'
-              ? 'bold 12px "Inter", sans-serif'
+              ? 'bold 14px "Inter", sans-serif'
               : node.type === 'primary'
-                ? '11px "Inter", sans-serif'
-                : '9px "Inter", sans-serif'
+                ? '600 12px "Inter", sans-serif'
+                : '11px "Inter", sans-serif'
           ctx.textAlign = 'center'
-          ctx.fillStyle = hl
-            ? isLight
-              ? 'rgba(13, 21, 37, 0.85)'
-              : 'rgba(226, 232, 240, 0.85)'
-            : isLight
-              ? 'rgba(13, 21, 37, 0.25)'
-              : 'rgba(226, 232, 240, 0.2)'
-          ctx.fillText(node.label, nx, ny + r + 14)
+          ctx.textBaseline = 'middle'
+
+          if (hl) {
+            ctx.fillStyle = node.type === 'decorative'
+              ? (isLight ? 'rgba(26, 20, 9, 0.35)' : 'rgba(226, 232, 240, 0.35)')
+              : color
+          } else {
+            ctx.fillStyle = isLight
+              ? 'rgba(26, 20, 9, 0.2)'
+              : 'rgba(226, 232, 240, 0.15)'
+          }
+
+          ctx.fillText(node.label, nx, ny)
         }
       }
 

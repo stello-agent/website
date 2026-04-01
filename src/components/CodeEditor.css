@@ -6,24 +6,24 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-subtle);
-  background: #fafbfc;
+  background: #f6f2eb;
   height: 100%;
   position: relative;
   transition:
     border-color 400ms ease,
     box-shadow 400ms ease;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent, #2266ee) 10%, transparent),
-    0 8px 24px rgba(0, 0, 0, 0.08),
-    0 0 60px color-mix(in srgb, var(--accent, #2266ee) 6%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--accent, #9b7b6b) 10%, transparent),
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    0 0 60px color-mix(in srgb, var(--accent, #9b7b6b) 5%, transparent);
 }
 
 :root[data-theme="dark"] .monaco-wrap {
   background: #0d1117;
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--accent, #4488ff) 10%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--accent, #8b9bab) 10%, transparent),
     0 20px 60px rgba(0, 0, 0, 0.55),
-    0 0 80px color-mix(in srgb, var(--accent, #4488ff) 8%, transparent);
+    0 0 80px color-mix(in srgb, var(--accent, #8b9bab) 8%, transparent);
 }
 
 /* Gradient glow border */
@@ -35,10 +35,10 @@
   padding: 1px;
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--accent, #4488ff) 35%, transparent),
+    color-mix(in srgb, var(--accent, #9b7b6b) 25%, transparent),
     transparent 45%,
     transparent 55%,
-    color-mix(in srgb, var(--accent, #4488ff) 18%, transparent)
+    color-mix(in srgb, var(--accent, #9b7b6b) 12%, transparent)
   );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
@@ -58,7 +58,7 @@
   align-items: center;
   height: 38px;
   padding: 0 14px;
-  background: #eef0f5;
+  background: #efe9e0;
   border-bottom: 1px solid var(--border-subtle);
   flex-shrink: 0;
   gap: 14px;
@@ -110,10 +110,10 @@
 }
 
 .monaco-tab--active {
-  background: #fafbfc;
+  background: #f6f2eb;
   color: var(--text-muted);
   border-color: var(--border-subtle);
-  border-bottom-color: #fafbfc;
+  border-bottom-color: #f6f2eb;
 }
 
 :root[data-theme="dark"] .monaco-tab--active {
@@ -168,7 +168,7 @@
   white-space: pre;
   overflow-x: auto;
   flex: 1;
-  color: #383a42;
+  color: #4a3f35;
 }
 
 :root[data-theme="dark"] .monaco-code {
@@ -182,26 +182,26 @@
 /* ── Syntax tokens ─────────────────────── */
 
 .ce-comment {
-  color: #9ea1a7;
+  color: #a8a090;
   font-style: italic;
 }
 .ce-string {
-  color: #50a14f;
+  color: #6b8b6b;
 }
 .ce-number {
-  color: #986801;
+  color: #8b7040;
 }
 .ce-key {
-  color: #4078f2;
+  color: #5b7b9b;
 }
 .ce-keyword {
-  color: #a626a4;
+  color: #8b5b6b;
 }
 .ce-punct {
-  color: #0184bc;
+  color: #5b8b8b;
 }
 .ce-plain {
-  color: #383a42;
+  color: #4a3f35;
 }
 
 :root[data-theme="dark"] .ce-comment {
@@ -229,28 +229,28 @@
 /* ── Markdown tokens ───────────────────── */
 
 .ce-md-h {
-  color: #0d1525;
+  color: #1a1409;
   font-weight: 700;
 }
 .ce-md-bold {
-  color: #8844dd;
+  color: #8b5b6b;
   font-weight: 600;
 }
 .ce-md-code {
-  color: #50a14f;
-  background: rgba(0, 0, 0, 0.06);
+  color: #6b8b6b;
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 3px;
   padding: 0 3px;
 }
 .ce-md-list {
-  color: #2266ee;
+  color: #5b7b9b;
   font-weight: 600;
 }
 .ce-md-link {
-  color: #109980;
+  color: #5b8b8b;
 }
 .ce-md-muted {
-  color: #a0a1a7;
+  color: #a8a090;
 }
 
 :root[data-theme="dark"] .ce-md-h {
@@ -279,7 +279,7 @@
   display: inline-block;
   width: 2px;
   height: 0.95em;
-  background: var(--accent, #4488ff);
+  background: var(--accent, #9b7b6b);
   vertical-align: text-bottom;
   margin-left: 1px;
   border-radius: 1px;
@@ -305,12 +305,12 @@
   justify-content: space-between;
   height: 22px;
   padding: 0 14px;
-  background: color-mix(in srgb, var(--accent, #2266ee) 20%, #dce6f8);
+  background: color-mix(in srgb, var(--accent, #9b7b6b) 15%, #efe9e0);
   flex-shrink: 0;
 }
 
 :root[data-theme="dark"] .monaco-statusbar {
-  background: color-mix(in srgb, var(--accent, #4488ff) 70%, #1a1d2e);
+  background: color-mix(in srgb, var(--accent, #8b9bab) 70%, #1a1d2e);
 }
 
 .monaco-status-lang,

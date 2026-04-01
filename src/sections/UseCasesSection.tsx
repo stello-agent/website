@@ -1,5 +1,5 @@
 // src/sections/UseCasesSection.tsx
-// Interactive use cases: click topology nodes or pills → switch scenario card
+// Screen 4: Use Cases — left topology + right text cards
 import { useState } from 'react'
 import { TopologyGraph } from '../components/TopologyGraph'
 import type { TopologyNode } from '../components/TopologyGraph'
@@ -30,11 +30,24 @@ export function UseCasesSection() {
   }
 
   return (
-    <section className="topo-section topo-section--right">
-      {/* Left: scenario card */}
+    <section className="topo-section topo-section--left">
+      {/* Left: topology */}
+      <TopologyGraph
+        nodes={usecaseNodes}
+        edges={usecaseEdges}
+        activeGroup={activeId}
+        highlightMode="click"
+        onNodeClick={handleNodeClick}
+        groupColors={UC_GROUP_COLORS}
+        width={560}
+        height={420}
+        theme={theme}
+      />
+
+      {/* Right: scenario card */}
       <div
         ref={panelRef}
-        className={`uc-panel animate-in animate-in--left${panelVisible ? ' visible' : ''}`}
+        className={`uc-panel animate-in animate-in--right${panelVisible ? ' visible' : ''}`}
       >
         <h3 className="uc-panel-title">
           {t(activeCase.title.en, activeCase.title.zh)}
@@ -78,19 +91,6 @@ export function UseCasesSection() {
           ))}
         </div>
       </div>
-
-      {/* Right: topology */}
-      <TopologyGraph
-        nodes={usecaseNodes}
-        edges={usecaseEdges}
-        activeGroup={activeId}
-        highlightMode="click"
-        onNodeClick={handleNodeClick}
-        groupColors={UC_GROUP_COLORS}
-        width={560}
-        height={420}
-        theme={theme}
-      />
     </section>
   )
 }

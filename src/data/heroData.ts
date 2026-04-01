@@ -11,9 +11,9 @@ export interface HeroCard {
 }
 
 export const GROUP_COLORS: Record<string, string> = {
-  problem: '#6b7280',
-  what: '#22c55e',
-  build: '#a855f7',
+  problem: '#9a8e80',
+  what: '#7b9b8b',
+  build: '#9b7b6b',
 }
 
 export const heroCards: HeroCard[] = [
@@ -24,8 +24,8 @@ export const heroCards: HeroCard[] = [
       zh: '线性对话正在拖垮你和 AI',
     },
     content: {
-      en: 'Topics diverge and pollute each other in a single window. Close the page and everything is gone.',
-      zh: '话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
+      en: 'Ever had this happen? Topics diverge and pollute each other crammed into one window. Close the page and everything is gone — try to pick up days later and you can\'t remember a thing.',
+      zh: '你是否会碰到：话题越聊越岔，硬塞一个窗口里互相污染。关掉页面什么都没留下，几天后想继续完全想不起来。',
     },
     highlight: {
       en: "You don't need a stronger model — you need a better way to collaborate.",
@@ -40,7 +40,7 @@ export const heroCards: HeroCard[] = [
       zh: '首个 Agent 认知拓扑引擎',
     },
     content: {
-      en: 'Topics auto-branch into isolated Sessions. Three-layer memory remembers everything. Global awareness detects cross-branch conflicts.',
+      en: 'When topics diverge, independent branches are automatically created — each direction goes deep without interference. Three-layer memory remembers everything. Global awareness detects cross-branch conflicts.',
       zh: '话题分叉时自动拆出独立分支，每个方向独立深入互不干扰。三层记忆帮你记住一切，全局意识层帮你发现分支之间的矛盾。',
     },
     highlight: {
@@ -60,7 +60,7 @@ export const heroCards: HeroCard[] = [
       zh: '给你的 Agent 加上分支对话、分级记忆和跨分支洞察。Session 管分支，Skill 管能力，Tool 管执行。',
     },
     highlight: {
-      en: 'From a single Session to a full topology — incremental integration.',
+      en: 'From a single Session to a full topology — incremental adoption.',
       zh: '从单 Session 到完整拓扑，渐进式接入。',
     },
     group: 'build',

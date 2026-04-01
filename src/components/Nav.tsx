@@ -23,7 +23,7 @@ function GithubIcon() {
 }
 
 export function Nav() {
-  const { toggle: toggleLang } = useLang()
+  const { t, toggle: toggleLang } = useLang()
   const { theme, toggle: toggleTheme } = useThemeContext()
 
   return (
@@ -37,6 +37,21 @@ export function Nav() {
         />
         <span className="brand-name">Stello</span>
       </a>
+      <nav className="topbar-center">
+        <a className="nav-link nav-link--active" href="/">
+          Overview
+        </a>
+        <a
+          className="nav-link"
+          href="https://stello-agent.github.io/docs"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Docs
+        </a>
+        {/* <a className="nav-link" href="/blog">Blog</a>
+        <a className="nav-link" href="/cases">Cases</a> */}
+      </nav>
       <div className="topbar-right">
         <button
           type="button"

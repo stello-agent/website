@@ -3,7 +3,7 @@ import { ThemeProvider } from '../context/ThemeContext'
 import { BrainstormSection } from '../sections/BrainstormSection'
 import { CtaSection } from '../sections/CtaSection'
 import { HeroSection } from '../sections/HeroSection'
-import { MemorySection } from '../sections/MemorySection'
+import { ProductOverviewSection } from '../sections/ProductOverviewSection'
 import { UseCasesSection } from '../sections/UseCasesSection'
 import { Nav } from './Nav'
 
@@ -15,8 +15,8 @@ export function HomePage() {
           <Nav />
           <main>
             <HeroSection />
-            <MemorySection />
             <BrainstormSection />
+            <ProductOverviewSection />
             <UseCasesSection />
             <CtaSection />
           </main>
