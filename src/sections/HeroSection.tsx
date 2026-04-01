@@ -92,12 +92,7 @@ export function HeroSection() {
           </span>
         </p>
         <div className="hero-actions">
-          <a
-            href="https://stello-agent.github.io/docs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-btn hero-btn--primary"
-          >
+          <a href="/docs/getting-started/introduction" className="hero-btn hero-btn--primary">
             {t('Get Started', '快速开始')} →
           </a>
           <a
