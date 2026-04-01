@@ -1,8 +1,8 @@
 /* Light theme (default) — warm cream palette inspired by Claude */
 :root {
-  --bg: #f9f5ee;
-  --bg-elevated: #f0ebe2;
-  --bg-card: #f9f5ee;
+  --bg: #f8f9fc;
+  --bg-elevated: #f0f1f5;
+  --bg-card: #f8f9fc;
   --text-strong: #1a1409;
   --text-muted: #5d5347;
   --text-faint: #9a8e80;
@@ -176,7 +176,7 @@ p {
   padding-inline: var(--side-pad);
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(249, 245, 238, 0.82);
+  background: rgba(248, 249, 252, 0.82);
   border-bottom: 1px solid var(--border-subtle);
   transition:
     background 300ms ease,

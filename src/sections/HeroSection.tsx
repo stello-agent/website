@@ -171,8 +171,8 @@ export function HeroSection() {
             activeGroup={hoveredGroup}
             highlightMode="hover"
             groupColors={GROUP_COLORS}
-            width={540}
-            height={440}
+            width={680}
+            height={500}
             theme={theme}
           />
         </div>

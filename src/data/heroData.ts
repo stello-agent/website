@@ -69,26 +69,26 @@ export const heroCards: HeroCard[] = [
 
 export const heroNodes: TopologyNode[] = [
   // Core
-  { id: 'stello', label: 'Stello', x: 300, y: 200, type: 'core' },
-  // Problem group (gray)
-  { id: 'linear', label: '线性对话', x: 480, y: 80, type: 'primary', group: 'problem' },
-  { id: 'context-loss', label: '上下文丢失', x: 520, y: 200, type: 'primary', group: 'problem' },
-  { id: 'forget', label: '结构遗忘', x: 470, y: 320, type: 'primary', group: 'problem' },
-  // What group (green)
-  { id: 'session-topo', label: 'Session 拓扑', x: 130, y: 70, type: 'primary', group: 'what' },
-  { id: 'memory-3', label: '三层记忆', x: 80, y: 200, type: 'primary', group: 'what' },
-  { id: 'global-aware', label: '全局意识', x: 130, y: 330, type: 'primary', group: 'what' },
-  // Build group (purple)
-  { id: 'skill', label: 'Skill 协议', x: 200, y: 400, type: 'primary', group: 'build' },
-  { id: 'tool-call', label: 'Tool 调用', x: 340, y: 400, type: 'primary', group: 'build' },
-  { id: 'agent-build', label: 'Agent 构建', x: 420, y: 400, type: 'primary', group: 'build' },
+  { id: 'stello', label: 'Stello', x: 400, y: 280, type: 'core' },
+  // Problem group (gray) — right side
+  { id: 'linear', label: '线性对话', x: 680, y: 100, type: 'primary', group: 'problem' },
+  { id: 'context-loss', label: '上下文丢失', x: 730, y: 280, type: 'primary', group: 'problem' },
+  { id: 'forget', label: '结构遗忘', x: 660, y: 460, type: 'primary', group: 'problem' },
+  // What group (green) — left side
+  { id: 'session-topo', label: 'Session 拓扑', x: 150, y: 80, type: 'primary', group: 'what' },
+  { id: 'memory-3', label: '三层记忆', x: 70, y: 280, type: 'primary', group: 'what' },
+  { id: 'global-aware', label: '全局意识', x: 150, y: 470, type: 'primary', group: 'what' },
+  // Build group (purple) — bottom
+  { id: 'skill', label: 'Skill 协议', x: 250, y: 560, type: 'primary', group: 'build' },
+  { id: 'tool-call', label: 'Tool 调用', x: 430, y: 560, type: 'primary', group: 'build' },
+  { id: 'agent-build', label: 'Agent 构建', x: 600, y: 560, type: 'primary', group: 'build' },
   // Decorative
-  { id: 'd-branch', label: '分支', x: 560, y: 130, type: 'decorative' },
-  { id: 'd-insight', label: '洞察', x: 40, y: 120, type: 'decorative' },
-  { id: 'd-network', label: '认知网络', x: 30, y: 310, type: 'decorative' },
-  { id: 'd-diverge', label: '思维发散', x: 560, y: 370, type: 'decorative' },
-  { id: 'd-starmap', label: '星空图', x: 200, y: 10, type: 'decorative' },
-  { id: 'd-flow', label: '记忆流动', x: 450, y: 10, type: 'decorative' },
+  { id: 'd-branch', label: '分支', x: 780, y: 170, type: 'decorative' },
+  { id: 'd-insight', label: '洞察', x: 30, y: 140, type: 'decorative' },
+  { id: 'd-network', label: '认知网络', x: 20, y: 430, type: 'decorative' },
+  { id: 'd-diverge', label: '思维发散', x: 780, y: 400, type: 'decorative' },
+  { id: 'd-starmap', label: '星空图', x: 260, y: 20, type: 'decorative' },
+  { id: 'd-flow', label: '记忆流动', x: 560, y: 20, type: 'decorative' },
 ]
 
 export const heroEdges: TopologyEdge[] = [

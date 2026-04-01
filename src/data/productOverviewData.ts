@@ -269,35 +269,35 @@ export const PRODUCT_GROUP_COLORS: Record<string, string> = {
 }
 
 export const productNodes: TopologyNode[] = [
-  { id: 'pkg-core', label: 'Stello SDK', x: 280, y: 220, type: 'core' },
+  { id: 'pkg-core', label: 'Stello SDK', x: 400, y: 300, type: 'core' },
   // Primary
-  { id: 'pkg-session', label: 'session', x: 430, y: 100, type: 'primary', group: 'session' },
-  { id: 'pkg-stello-core', label: 'core', x: 450, y: 340, type: 'primary', group: 'core' },
-  { id: 'pkg-server', label: 'server', x: 110, y: 340, type: 'primary', group: 'server' },
-  { id: 'pkg-devtools', label: 'devtools', x: 100, y: 100, type: 'primary', group: 'devtools' },
+  { id: 'pkg-session', label: 'session', x: 620, y: 100, type: 'primary', group: 'session' },
+  { id: 'pkg-stello-core', label: 'core', x: 650, y: 480, type: 'primary', group: 'core' },
+  { id: 'pkg-server', label: 'server', x: 130, y: 480, type: 'primary', group: 'server' },
+  { id: 'pkg-devtools', label: 'devtools', x: 120, y: 100, type: 'primary', group: 'devtools' },
   // Child — session
-  { id: 'pkg-s-l3', label: 'L3 记录', x: 520, y: 30, type: 'child', group: 'session' },
-  { id: 'pkg-s-l2', label: 'L2 提炼', x: 540, y: 130, type: 'child', group: 'session' },
-  { id: 'pkg-s-llm', label: 'LLM 适配', x: 520, y: 200, type: 'child', group: 'session' },
+  { id: 'pkg-s-l3', label: 'L3 记录', x: 740, y: 20, type: 'child', group: 'session' },
+  { id: 'pkg-s-l2', label: 'L2 提炼', x: 770, y: 140, type: 'child', group: 'session' },
+  { id: 'pkg-s-llm', label: 'LLM 适配', x: 740, y: 260, type: 'child', group: 'session' },
   // Child — core
-  { id: 'pkg-c-turn', label: 'turn 执行', x: 540, y: 280, type: 'child', group: 'core' },
-  { id: 'pkg-c-fork', label: 'fork 编排', x: 530, y: 370, type: 'child', group: 'core' },
-  { id: 'pkg-c-int', label: 'integration 调度', x: 450, y: 430, type: 'child', group: 'core' },
+  { id: 'pkg-c-turn', label: 'turn 执行', x: 780, y: 390, type: 'child', group: 'core' },
+  { id: 'pkg-c-fork', label: 'fork 编排', x: 760, y: 520, type: 'child', group: 'core' },
+  { id: 'pkg-c-int', label: 'integration 调度', x: 620, y: 580, type: 'child', group: 'core' },
   // Child — server
-  { id: 'pkg-sv-rest', label: 'REST API', x: 20, y: 390, type: 'child', group: 'server' },
-  { id: 'pkg-sv-pg', label: 'PostgreSQL', x: 20, y: 300, type: 'child', group: 'server' },
-  { id: 'pkg-sv-mt', label: '多租户', x: 50, y: 430, type: 'child', group: 'server' },
+  { id: 'pkg-sv-rest', label: 'REST API', x: 20, y: 540, type: 'child', group: 'server' },
+  { id: 'pkg-sv-pg', label: 'PostgreSQL', x: 10, y: 400, type: 'child', group: 'server' },
+  { id: 'pkg-sv-mt', label: '多租户', x: 60, y: 580, type: 'child', group: 'server' },
   // Child — devtools
-  { id: 'pkg-d-star', label: '星空图', x: 10, y: 50, type: 'child', group: 'devtools' },
-  { id: 'pkg-d-replay', label: '对话回放', x: 30, y: 150, type: 'child', group: 'devtools' },
-  { id: 'pkg-d-event', label: '事件监控', x: 10, y: 190, type: 'child', group: 'devtools' },
+  { id: 'pkg-d-star', label: '星空图', x: 10, y: 40, type: 'child', group: 'devtools' },
+  { id: 'pkg-d-replay', label: '对话回放', x: 20, y: 180, type: 'child', group: 'devtools' },
+  { id: 'pkg-d-event', label: '事件监控', x: 10, y: 260, type: 'child', group: 'devtools' },
   // Decorative
-  { id: 'd-adapter', label: 'adapter', x: 560, y: 160, type: 'decorative' },
-  { id: 'd-storage', label: 'storage', x: 300, y: 450, type: 'decorative' },
-  { id: 'd-plugin', label: 'plugin', x: 0, y: 240, type: 'decorative' },
-  { id: 'd-runtime', label: 'runtime', x: 180, y: 0, type: 'decorative' },
-  { id: 'd-schema', label: 'schema', x: 400, y: 0, type: 'decorative' },
-  { id: 'd-hook', label: 'hook', x: 170, y: 450, type: 'decorative' },
+  { id: 'd-adapter', label: 'adapter', x: 790, y: 200, type: 'decorative' },
+  { id: 'd-storage', label: 'storage', x: 400, y: 600, type: 'decorative' },
+  { id: 'd-plugin', label: 'plugin', x: 0, y: 330, type: 'decorative' },
+  { id: 'd-runtime', label: 'runtime', x: 230, y: 10, type: 'decorative' },
+  { id: 'd-schema', label: 'schema', x: 530, y: 10, type: 'decorative' },
+  { id: 'd-hook', label: 'hook', x: 220, y: 600, type: 'decorative' },
 ]
 
 export const productEdges: TopologyEdge[] = [

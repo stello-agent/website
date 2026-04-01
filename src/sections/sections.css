@@ -408,8 +408,8 @@
 .hero-v5-topo canvas {
   width: 100% !important;
   height: 100% !important;
-  max-width: 540px;
-  max-height: 440px;
+  max-width: 680px;
+  max-height: 500px;
 }
 
 @media (max-width: 900px) {
