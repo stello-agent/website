@@ -32,9 +32,12 @@ export function SectionConnector({ theme }: Props) {
     const pts: { x: number; y: number }[] = []
     canvases.forEach((c) => {
       const rect = c.getBoundingClientRect()
+      // Use core node position if available, otherwise fallback to center
+      const rx = parseFloat(c.getAttribute('data-core-rx') || '0.5')
+      const ry = parseFloat(c.getAttribute('data-core-ry') || '0.5')
       pts.push({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
+        x: rect.left + rect.width * rx,
+        y: rect.top + rect.height * ry
       })
     })
 

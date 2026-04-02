@@ -22,24 +22,8 @@ export function OverviewSection() {
 
   return (
     <section className="hero-section hero-v5 hero-v5--overview">
-      <div className="overview-top">
-        <div
-          ref={topoRef}
-          className={`overview-topo animate-in${topoVisible ? ' visible' : ''}`}
-        >
-          <TopologyGraph
-            nodes={heroNodes}
-            edges={heroEdges}
-            activeGroup={hoveredGroup}
-            highlightMode="hover"
-            groupColors={GROUP_COLORS}
-            width={560}
-            height={420}
-            theme={theme}
-          />
-        </div>
-      </div>
-      <div className="overview-cards">
+      <div className="hero-v5-lower">
+        <div className="hero-v5-cards">
         {heroCards.map((card, i) => {
           const isActive = hoveredGroup === card.group
           return (
@@ -70,6 +54,22 @@ export function OverviewSection() {
             </div>
           )
         })}
+        </div>
+        <div
+          ref={topoRef}
+          className={`hero-v5-topo animate-in${topoVisible ? ' visible' : ''}`}
+          style={{ transitionDelay: '200ms' }}
+        >
+          <TopologyGraph
+            nodes={heroNodes}
+            edges={heroEdges}
+            activeGroup={hoveredGroup}
+            groupColors={GROUP_COLORS}
+            width={560}
+            height={420}
+            theme={theme}
+          />
+        </div>
       </div>
     </section>
   )

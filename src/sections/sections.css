@@ -436,7 +436,7 @@
   display: flex;
   flex-direction: column;
   gap: clamp(8px, 1.2vh, 14px);
-  flex: 0 0 clamp(320px, 38%, 460px);
+  flex: 0 0 clamp(280px, 32%, 380px);
 }
 
 :root {
@@ -448,8 +448,8 @@
 }
 
 .hero-v5-card {
-  padding: clamp(14px, 1.8vh, 22px) clamp(16px, 2vw, 26px);
-  border-radius: 14px;
+  padding: clamp(10px, 1.4vh, 16px) clamp(14px, 1.5vw, 20px);
+  border-radius: 12px;
   background: var(--bg-card);
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -468,23 +468,23 @@
 }
 
 .hero-v5-card-title {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-strong);
-  margin: 0 0 8px;
+  margin: 0 0 4px;
   letter-spacing: -0.02em;
 }
 
 .hero-v5-card-content {
-  font-size: 0.82rem;
-  line-height: 1.6;
+  font-size: 0.78rem;
+  line-height: 1.55;
   color: var(--text-muted);
-  margin: 0 0 8px;
+  margin: 0 0 6px;
 }
 
 .hero-v5-card-highlight {
   border-left: 2px solid var(--text-faint);
-  padding-left: 10px;
+  padding-left: 8px;
   margin: 0;
   font-size: 0.85rem;
   font-weight: 600;
@@ -503,8 +503,8 @@
 .hero-v5-topo canvas {
   width: 100% !important;
   height: auto !important;
-  aspect-ratio: 480 / 280;
-  max-width: 480px;
+  aspect-ratio: 4 / 3;
+  max-width: 600px;
 }
 
 @media (max-width: 900px) {
