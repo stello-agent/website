@@ -281,7 +281,7 @@ export function TopologyGraph({
 
       const nodeMap = new Map(pNodes.map((n) => [n.id, n]))
 
-      // Draw edges
+      // Draw edges — fade near core nodes
       for (const edge of edgesRef.current) {
         const from = nodeMap.get(edge.from)
         const to = nodeMap.get(edge.to)
@@ -291,20 +291,25 @@ export function TopologyGraph({
         const toHL = isHighlighted(to)
         const edgeHL = fromHL && toHL
 
+        const baseOpacity = edgeHL
+          ? isLight ? 0.3 : 0.3
+          : isLight ? 0.1 : 0.08
+        const rgb = isLight ? '100, 116, 139' : '148, 163, 184'
+
         ctx.beginPath()
         ctx.moveTo(from.x, from.y)
         ctx.lineTo(to.x, to.y)
-
         ctx.setLineDash([])
         ctx.lineWidth = edgeHL ? 1 : 0.5
 
-        ctx.strokeStyle = edgeHL
-          ? isLight
-            ? 'rgba(100, 116, 139, 0.3)'
-            : 'rgba(148, 163, 184, 0.3)'
-          : isLight
-            ? 'rgba(100, 116, 139, 0.1)'
-            : 'rgba(148, 163, 184, 0.08)'
+        // All edges fade at both endpoints
+        const grad = ctx.createLinearGradient(from.x, from.y, to.x, to.y)
+        grad.addColorStop(0, `rgba(${rgb}, 0)`)
+        grad.addColorStop(0.3, `rgba(${rgb}, ${baseOpacity})`)
+        grad.addColorStop(0.7, `rgba(${rgb}, ${baseOpacity})`)
+        grad.addColorStop(1, `rgba(${rgb}, 0)`)
+        ctx.strokeStyle = grad
+
         ctx.stroke()
         ctx.setLineDash([])
       }
