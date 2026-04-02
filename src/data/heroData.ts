@@ -68,52 +68,39 @@ export const heroCards: HeroCard[] = [
 ]
 
 export const heroNodes: TopologyNode[] = [
-  // Core
-  { id: 'stello', label: 'Stello', x: 400, y: 280, type: 'core' },
-  // Problem group (gray) — right side
-  { id: 'linear', label: '线性对话', x: 680, y: 100, type: 'primary', group: 'problem' },
-  { id: 'context-loss', label: '上下文丢失', x: 730, y: 280, type: 'primary', group: 'problem' },
-  { id: 'forget', label: '结构遗忘', x: 660, y: 460, type: 'primary', group: 'problem' },
-  // What group (green) — left side
-  { id: 'session-topo', label: 'Session 拓扑', x: 150, y: 80, type: 'primary', group: 'what' },
-  { id: 'memory-3', label: '三层记忆', x: 70, y: 280, type: 'primary', group: 'what' },
-  { id: 'global-aware', label: '全局意识', x: 150, y: 470, type: 'primary', group: 'what' },
-  // Build group (purple) — bottom
-  { id: 'skill', label: 'Skill 协议', x: 250, y: 560, type: 'primary', group: 'build' },
-  { id: 'tool-call', label: 'Tool 调用', x: 430, y: 560, type: 'primary', group: 'build' },
-  { id: 'agent-build', label: 'Agent 构建', x: 600, y: 560, type: 'primary', group: 'build' },
-  // Decorative
-  { id: 'd-branch', label: '分支', x: 780, y: 170, type: 'decorative' },
-  { id: 'd-insight', label: '洞察', x: 30, y: 140, type: 'decorative' },
-  { id: 'd-network', label: '认知网络', x: 20, y: 430, type: 'decorative' },
-  { id: 'd-diverge', label: '思维发散', x: 780, y: 400, type: 'decorative' },
-  { id: 'd-starmap', label: '星空图', x: 260, y: 20, type: 'decorative' },
-  { id: 'd-flow', label: '记忆流动', x: 560, y: 20, type: 'decorative' },
+  // Core — center
+  { id: 'stello', label: 'Stello', x: 400, y: 320, type: 'core' },
+  // Primary — 3 groups, generous spacing from core
+  { id: 'problem', label: '困境', x: 130, y: 160, type: 'primary', group: 'problem' },
+  { id: 'what', label: '是什么', x: 670, y: 160, type: 'primary', group: 'what' },
+  { id: 'build', label: '能做什么', x: 400, y: 560, type: 'primary', group: 'build' },
+  // Children — problem (fan out top-left)
+  { id: 'context-loss', label: '上下文丢失', x: 30, y: 50, type: 'child', group: 'problem' },
+  { id: 'linear', label: '线性对话', x: 220, y: 30, type: 'child', group: 'problem' },
+  { id: 'forget', label: '结构遗忘', x: 20, y: 270, type: 'child', group: 'problem' },
+  // Children — what (fan out top-right)
+  { id: 'session-topo', label: 'Session 拓扑', x: 580, y: 30, type: 'child', group: 'what' },
+  { id: 'memory-3', label: '三层记忆', x: 770, y: 50, type: 'child', group: 'what' },
+  { id: 'global-aware', label: '全局意识', x: 780, y: 270, type: 'child', group: 'what' },
+  // Children — build (fan out bottom)
+  { id: 'skill', label: 'Skill 协议', x: 200, y: 620, type: 'child', group: 'build' },
+  { id: 'tool-call', label: 'Tool 调用', x: 400, y: 660, type: 'child', group: 'build' },
+  { id: 'agent-build', label: 'Agent 构建', x: 600, y: 620, type: 'child', group: 'build' },
 ]
 
 export const heroEdges: TopologyEdge[] = [
-  // Core -> primary
-  { from: 'stello', to: 'linear', style: 'solid' },
-  { from: 'stello', to: 'context-loss', style: 'solid' },
-  { from: 'stello', to: 'forget', style: 'solid' },
-  { from: 'stello', to: 'session-topo', style: 'solid' },
-  { from: 'stello', to: 'memory-3', style: 'solid' },
-  { from: 'stello', to: 'global-aware', style: 'solid' },
-  { from: 'stello', to: 'skill', style: 'solid' },
-  { from: 'stello', to: 'tool-call', style: 'solid' },
-  { from: 'stello', to: 'agent-build', style: 'solid' },
-  // Intra-group
-  { from: 'linear', to: 'context-loss', style: 'dashed' },
-  { from: 'context-loss', to: 'forget', style: 'dashed' },
-  { from: 'session-topo', to: 'memory-3', style: 'dashed' },
-  { from: 'memory-3', to: 'global-aware', style: 'dashed' },
-  { from: 'skill', to: 'tool-call', style: 'dashed' },
-  { from: 'tool-call', to: 'agent-build', style: 'dashed' },
-  // Decorative
-  { from: 'd-branch', to: 'linear', style: 'thin-dashed' },
-  { from: 'd-insight', to: 'session-topo', style: 'thin-dashed' },
-  { from: 'd-network', to: 'global-aware', style: 'thin-dashed' },
-  { from: 'd-diverge', to: 'forget', style: 'thin-dashed' },
-  { from: 'd-starmap', to: 'session-topo', style: 'thin-dashed' },
-  { from: 'd-flow', to: 'linear', style: 'thin-dashed' },
+  // Core → primary
+  { from: 'stello', to: 'problem', style: 'solid' },
+  { from: 'stello', to: 'what', style: 'solid' },
+  { from: 'stello', to: 'build', style: 'solid' },
+  // Primary → children
+  { from: 'problem', to: 'context-loss', style: 'solid' },
+  { from: 'problem', to: 'linear', style: 'solid' },
+  { from: 'problem', to: 'forget', style: 'solid' },
+  { from: 'what', to: 'session-topo', style: 'solid' },
+  { from: 'what', to: 'memory-3', style: 'solid' },
+  { from: 'what', to: 'global-aware', style: 'solid' },
+  { from: 'build', to: 'skill', style: 'solid' },
+  { from: 'build', to: 'tool-call', style: 'solid' },
+  { from: 'build', to: 'agent-build', style: 'solid' },
 ]

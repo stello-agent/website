@@ -1,9 +1,6 @@
 // src/sections/HeroSection.tsx
 import { useEffect, useState } from 'react'
-import { TopologyGraph } from '../components/TopologyGraph'
-import { heroCards, heroNodes, heroEdges, GROUP_COLORS } from '../data/heroData'
 import { strings } from '../data/i18n'
-import { useThemeContext } from '../context/ThemeContext'
 import { useLang } from '../hooks/useLang'
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver'
 import './sections.css'
@@ -16,27 +13,17 @@ type Phase = 'typing' | 'holding' | 'deleting'
 
 export function HeroSection() {
   const { t, lang } = useLang()
-  const { theme } = useThemeContext()
   const s = strings.hero
 
   const phrases = s.typewriterPhrases
   const [phraseIdx, setPhraseIdx] = useState(0)
   const [displayLen, setDisplayLen] = useState(0)
   const [phase, setPhase] = useState<Phase>('typing')
-  const [hoveredGroup, setHoveredGroup] = useState<string | null>(null)
 
   const fullPhrase = t(phrases[phraseIdx].en, phrases[phraseIdx].zh)
   const displayed = fullPhrase.slice(0, displayLen)
 
-  // Entrance animation refs
   const [upperRef, upperVisible] = useIntersectionObserver<HTMLDivElement>()
-  const [card0Ref, card0Visible] = useIntersectionObserver<HTMLDivElement>()
-  const [card1Ref, card1Visible] = useIntersectionObserver<HTMLDivElement>()
-  const [card2Ref, card2Visible] = useIntersectionObserver<HTMLDivElement>()
-  const [topoRef, topoVisible] = useIntersectionObserver<HTMLDivElement>()
-
-  const cardRefs = [card0Ref, card1Ref, card2Ref]
-  const cardVisibles = [card0Visible, card1Visible, card2Visible]
 
   // Reset on language change
   useEffect(() => {
@@ -67,8 +54,7 @@ export function HeroSection() {
   }, [phase, displayLen, fullPhrase, phrases.length])
 
   return (
-    <section className="hero-section hero-v5">
-      {/* Upper: Title + Typewriter + CTA buttons */}
+    <section className="hero-section hero-v5 hero-v5--landing">
       <div
         ref={upperRef}
         className={`hero-v5-upper animate-in${upperVisible ? ' visible' : ''}`}
@@ -82,7 +68,7 @@ export function HeroSection() {
             '首个开源 Agent 认知拓扑引擎'
           )}
         </p>
-        <p className="hero-typewriter">
+        <p className="hero-typewriter hero-typewriter--large">
           {displayed}
           <span
             className={`hero-cursor${phase === 'holding' ? ' hero-cursor--blink' : ''}`}
@@ -118,58 +104,6 @@ export function HeroSection() {
           >
             {t('Contact Us', '联系我们')}
           </a>
-        </div>
-      </div>
-
-      {/* Lower: Cards + TopologyGraph */}
-      <div className="hero-v5-lower">
-        <div className="hero-v5-cards">
-          {heroCards.map((card, i) => {
-            const isActive = hoveredGroup === card.group
-            return (
-              <div
-                key={card.id}
-                ref={cardRefs[i]}
-                className={`hero-v5-card animate-in${cardVisibles[i] ? ' visible' : ''}`}
-                style={{
-                  transitionDelay: `${100 + i * 100}ms`,
-                  borderColor: isActive ? GROUP_COLORS[card.group] : undefined,
-                  background: isActive ? 'var(--hero-card-active)' : undefined
-                }}
-                onMouseEnter={() => setHoveredGroup(card.group)}
-                onMouseLeave={() => setHoveredGroup(null)}
-              >
-                <h3 className="hero-v5-card-title">
-                  {t(card.title.en, card.title.zh)}
-                </h3>
-                <p className="hero-v5-card-content">
-                  {t(card.content.en, card.content.zh)}
-                </p>
-                <p
-                  className="hero-v5-card-highlight"
-                  style={{ borderLeftColor: GROUP_COLORS[card.group] }}
-                >
-                  {t(card.highlight.en, card.highlight.zh)}
-                </p>
-              </div>
-            )
-          })}
-        </div>
-        <div
-          ref={topoRef}
-          className={`hero-v5-topo animate-in${topoVisible ? ' visible' : ''}`}
-          style={{ transitionDelay: '200ms' }}
-        >
-          <TopologyGraph
-            nodes={heroNodes}
-            edges={heroEdges}
-            activeGroup={hoveredGroup}
-            highlightMode="hover"
-            groupColors={GROUP_COLORS}
-            width={680}
-            height={500}
-            theme={theme}
-          />
         </div>
       </div>
     </section>

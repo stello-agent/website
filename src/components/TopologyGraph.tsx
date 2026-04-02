@@ -1,6 +1,6 @@
 // src/components/TopologyGraph.tsx
 // Canvas-based topology graph with group highlighting, physics simulation, and drag support.
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 /* ── Types ───────────────────────────── */
 
@@ -103,9 +103,9 @@ export function applyPhysics(
   damping: number,
   bounds?: { width: number; height: number; padding: number }
 ) {
-  const REPULSION = 5000
-  const SPRING_K = 0.006
-  const SPRING_REST = 100
+  const REPULSION = 3000
+  const SPRING_K = 0.008
+  const SPRING_REST = 70
   const DRIFT = 0.02
 
   // Repulsion (inverse-square)
@@ -205,8 +205,6 @@ export function TopologyGraph({
   nodes,
   edges,
   activeGroup,
-  highlightMode = 'hover',
-  onNodeClick,
   groupColors,
   width = 600,
   height = 460,
@@ -220,16 +218,10 @@ export function TopologyGraph({
   const physicsNodes = useRef<PhysicsNode[]>([])
   const edgesRef = useRef(edges)
   const activeGroupRef = useRef(activeGroup)
-  const dragRef = useRef<{
-    nodeId: string
-    offsetX: number
-    offsetY: number
-  } | null>(null)
-  const didDragRef = useRef(false)
 
   // Initialize: map logical coords → canvas coords once
   useEffect(() => {
-    const t = computeTransform(nodes, width, height, 52)
+    const t = computeTransform(nodes, width, height, 30)
     physicsNodes.current = nodes.map((n) => ({
       ...n,
       x: n.x * t.sx + t.ox,
@@ -271,7 +263,7 @@ export function TopologyGraph({
     canvas.height = height * dpr
     ctx.scale(dpr, dpr)
 
-    const physicsBounds = { width, height, padding: 100 }
+    const physicsBounds = { width, height, padding: 40 }
 
     const draw = () => {
       timeRef.current += 0.01
@@ -282,22 +274,7 @@ export function TopologyGraph({
         return
       }
 
-      // Apply physics — pin dragged node
-      const dragId = dragRef.current?.nodeId
-      if (dragId) {
-        const dragNode = pNodes.find((n) => n.id === dragId)
-        const savedX = dragNode?.x ?? 0
-        const savedY = dragNode?.y ?? 0
-        applyPhysics(pNodes, edgesRef.current, 0.85, physicsBounds)
-        if (dragNode) {
-          dragNode.x = savedX
-          dragNode.y = savedY
-          dragNode.vx = 0
-          dragNode.vy = 0
-        }
-      } else {
-        applyPhysics(pNodes, edgesRef.current, 0.85, physicsBounds)
-      }
+      applyPhysics(pNodes, edgesRef.current, 0.85, physicsBounds)
 
       // Nodes are already in canvas coordinates — draw directly
       ctx.clearRect(0, 0, width, height)
@@ -318,21 +295,13 @@ export function TopologyGraph({
         ctx.moveTo(from.x, from.y)
         ctx.lineTo(to.x, to.y)
 
-        if (edge.style === 'dashed') {
-          ctx.setLineDash([5, 3])
-          ctx.lineWidth = edgeHL ? 1 : 0.4
-        } else if (edge.style === 'thin-dashed') {
-          ctx.setLineDash([2, 4])
-          ctx.lineWidth = edgeHL ? 0.6 : 0.25
-        } else {
-          ctx.setLineDash([])
-          ctx.lineWidth = edgeHL ? 1.2 : 0.6
-        }
+        ctx.setLineDash([])
+        ctx.lineWidth = edgeHL ? 1 : 0.5
 
         ctx.strokeStyle = edgeHL
           ? isLight
-            ? 'rgba(100, 116, 139, 0.35)'
-            : 'rgba(148, 163, 184, 0.35)'
+            ? 'rgba(100, 116, 139, 0.3)'
+            : 'rgba(148, 163, 184, 0.3)'
           : isLight
             ? 'rgba(100, 116, 139, 0.1)'
             : 'rgba(148, 163, 184, 0.08)'
@@ -347,14 +316,14 @@ export function TopologyGraph({
         const nx = node.x
         const ny = node.y
 
-        // Label
+        // Label — always show core/primary/child, decorative only when highlighted
         if (node.type !== 'decorative' || hl) {
           ctx.font =
             node.type === 'core'
-              ? 'bold 40px "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif'
+              ? 'bold 32px "Kaiti SC", "STKaiti", "KaiTi", "楷体", serif'
               : node.type === 'primary'
-                ? '600 25px "Songti SC", "STSong", "SimSun", "宋体", serif'
-                : '15px "Songti SC", "STSong", "SimSun", "宋体", serif'
+                ? '600 20px "Songti SC", "STSong", "SimSun", "宋体", serif'
+                : '14px "Songti SC", "STSong", "SimSun", "宋体", serif'
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
 
@@ -375,6 +344,13 @@ export function TopologyGraph({
         }
       }
 
+      // Expose core node position as data attributes for SectionConnector
+      const coreNode = pNodes.find((n) => n.type === 'core')
+      if (coreNode && canvas) {
+        canvas.setAttribute('data-core-rx', String(coreNode.x / width))
+        canvas.setAttribute('data-core-ry', String(coreNode.y / height))
+      }
+
       animRef.current = requestAnimationFrame(draw)
     }
 
@@ -385,97 +361,11 @@ export function TopologyGraph({
     }
   }, [width, height, getNodeColor, isHighlighted, isLight])
 
-  /* ── Mouse interaction (all in canvas space) ── */
-
-  const getCanvasPos = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const canvas = canvasRef.current
-      if (!canvas) return { x: 0, y: 0 }
-      const rect = canvas.getBoundingClientRect()
-      return {
-        x: (e.clientX - rect.left) * (width / rect.width),
-        y: (e.clientY - rect.top) * (height / rect.height)
-      }
-    },
-    [width, height]
-  )
-
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      const pos = getCanvasPos(e)
-      const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
-      if (hit) {
-        dragRef.current = {
-          nodeId: hit.id,
-          offsetX: pos.x - hit.x,
-          offsetY: pos.y - hit.y
-        }
-        didDragRef.current = false
-        const pNode = physicsNodes.current.find((n) => n.id === hit.id)
-        if (pNode) {
-          pNode.vx = 0
-          pNode.vy = 0
-        }
-      }
-    },
-    [getCanvasPos]
-  )
-
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      if (!dragRef.current) return
-      didDragRef.current = true
-      const pos = getCanvasPos(e)
-      const pNode = physicsNodes.current.find(
-        (n) => n.id === dragRef.current!.nodeId
-      )
-      if (pNode) {
-        pNode.x = pos.x - dragRef.current.offsetX
-        pNode.y = pos.y - dragRef.current.offsetY
-        pNode.vx = 0
-        pNode.vy = 0
-      }
-    },
-    [getCanvasPos]
-  )
-
-  const handleMouseUp = useCallback(() => {
-    if (dragRef.current) {
-      dragRef.current = null
-    }
-  }, [])
-
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLCanvasElement>) => {
-      // Skip click if we just dragged
-      if (didDragRef.current) {
-        didDragRef.current = false
-        return
-      }
-      if (!onNodeClick || highlightMode !== 'click') return
-      const pos = getCanvasPos(e)
-      const hit = hitTestNode(physicsNodes.current, pos.x, pos.y)
-      if (hit) onNodeClick(hit)
-    },
-    [onNodeClick, highlightMode, getCanvasPos]
-  )
-
   return (
     <canvas
       ref={canvasRef}
-      style={{
-        width,
-        height,
-        cursor: dragRef.current
-          ? 'grabbing'
-          : highlightMode === 'click'
-            ? 'pointer'
-            : 'grab'
-      }}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onClick={handleClick}
+      data-topo="true"
+      style={{ width, height }}
     />
   )
 }

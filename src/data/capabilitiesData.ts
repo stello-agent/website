@@ -273,35 +273,33 @@ export const GROUP_COLORS: Record<string, string> = {
 
 export const capabilityNodes: TopologyNode[] = [
   { id: 'cap-core', label: '核心能力', x: 400, y: 300, type: 'core' },
-  // Primary (5 nodes in circular arrangement)
-  { id: 'cap-split', label: '对话自动分裂', x: 640, y: 120, type: 'primary', group: 'auto-split' },
-  { id: 'cap-memory', label: '三层分级记忆', x: 680, y: 460, type: 'primary', group: 'memory-3' },
-  { id: 'cap-global', label: '全局意识整合', x: 180, y: 500, type: 'primary', group: 'global-integration' },
-  { id: 'cap-zero', label: '对话中零开销', x: 100, y: 140, type: 'primary', group: 'zero-overhead' },
-  { id: 'cap-star', label: '星空图可视化', x: 400, y: 40, type: 'primary', group: 'starmap' },
-  // Child — auto-split
-  { id: 'cap-scope', label: 'Scope 定义', x: 770, y: 40, type: 'child', group: 'auto-split' },
-  { id: 'cap-guard', label: '分裂保护', x: 780, y: 190, type: 'child', group: 'auto-split' },
-  // Child — memory
-  { id: 'cap-l3', label: 'L3 原始记录', x: 790, y: 370, type: 'child', group: 'memory-3' },
-  { id: 'cap-l2', label: 'L2 外部摘要', x: 770, y: 510, type: 'child', group: 'memory-3' },
-  { id: 'cap-l1', label: 'L1 全局认知', x: 640, y: 570, type: 'child', group: 'memory-3' },
-  // Child — global
-  { id: 'cap-synthesis', label: 'Synthesis', x: 80, y: 580, type: 'child', group: 'global-integration' },
-  { id: 'cap-insights', label: 'Insights', x: 50, y: 430, type: 'child', group: 'global-integration' },
-  // Child — zero-overhead
-  { id: 'cap-consolidation', label: 'Consolidation', x: 10, y: 240, type: 'child', group: 'zero-overhead' },
-  { id: 'cap-integration', label: 'Integration', x: 10, y: 60, type: 'child', group: 'zero-overhead' },
-  // Child — starmap
-  { id: 'cap-node-map', label: '节点映射', x: 250, y: 10, type: 'child', group: 'starmap' },
-  { id: 'cap-interact', label: '交互能力', x: 550, y: 10, type: 'child', group: 'starmap' },
+  // Primary — 5 nodes evenly around core
+  { id: 'cap-split', label: '对话自动分裂', x: 600, y: 140, type: 'primary', group: 'auto-split' },
+  { id: 'cap-memory', label: '三层分级记忆', x: 620, y: 440, type: 'primary', group: 'memory-3' },
+  { id: 'cap-global', label: '全局意识整合', x: 200, y: 460, type: 'primary', group: 'global-integration' },
+  { id: 'cap-zero', label: '对话中零开销', x: 180, y: 160, type: 'primary', group: 'zero-overhead' },
+  { id: 'cap-star', label: '星空图可视化', x: 400, y: 80, type: 'primary', group: 'starmap' },
+  // Child — auto-split (near top-right)
+  { id: 'cap-scope', label: 'Scope 定义', x: 700, y: 60, type: 'child', group: 'auto-split' },
+  { id: 'cap-guard', label: '分裂保护', x: 720, y: 200, type: 'child', group: 'auto-split' },
+  // Child — memory (near bottom-right)
+  { id: 'cap-l3', label: 'L3 原始记录', x: 720, y: 360, type: 'child', group: 'memory-3' },
+  { id: 'cap-l2', label: 'L2 外部摘要', x: 700, y: 510, type: 'child', group: 'memory-3' },
+  { id: 'cap-l1', label: 'L1 全局认知', x: 540, y: 530, type: 'child', group: 'memory-3' },
+  // Child — global (near bottom-left)
+  { id: 'cap-synthesis', label: 'Synthesis', x: 120, y: 540, type: 'child', group: 'global-integration' },
+  { id: 'cap-insights', label: 'Insights', x: 100, y: 380, type: 'child', group: 'global-integration' },
+  // Child — zero-overhead (near top-left)
+  { id: 'cap-consolidation', label: 'Consolidation', x: 80, y: 240, type: 'child', group: 'zero-overhead' },
+  { id: 'cap-integration', label: 'Integration', x: 100, y: 90, type: 'child', group: 'zero-overhead' },
+  // Child — starmap (top center)
+  { id: 'cap-node-map', label: '节点映射', x: 280, y: 40, type: 'child', group: 'starmap' },
+  { id: 'cap-interact', label: '交互能力', x: 520, y: 40, type: 'child', group: 'starmap' },
   // Decorative
-  { id: 'd-fork', label: 'fork', x: 800, y: 280, type: 'decorative' },
-  { id: 'd-stream', label: 'stream', x: 480, y: 600, type: 'decorative' },
-  { id: 'd-async', label: 'async', x: 0, y: 340, type: 'decorative' },
-  { id: 'd-topo', label: 'topology', x: 150, y: 10, type: 'decorative' },
-  { id: 'd-branch', label: 'branch', x: 600, y: 600, type: 'decorative' },
-  { id: 'd-canvas', label: 'canvas', x: 600, y: 0, type: 'decorative' },
+  { id: 'd-fork', label: 'fork', x: 740, y: 280, type: 'decorative' },
+  { id: 'd-stream', label: 'stream', x: 460, y: 560, type: 'decorative' },
+  { id: 'd-async', label: 'async', x: 60, y: 320, type: 'decorative' },
+  { id: 'd-topo', label: 'topology', x: 200, y: 30, type: 'decorative' },
 ]
 
 export const capabilityEdges: TopologyEdge[] = [
@@ -334,6 +332,4 @@ export const capabilityEdges: TopologyEdge[] = [
   { from: 'd-stream', to: 'cap-memory', style: 'thin-dashed' },
   { from: 'd-async', to: 'cap-global', style: 'thin-dashed' },
   { from: 'd-topo', to: 'cap-star', style: 'thin-dashed' },
-  { from: 'd-branch', to: 'cap-global', style: 'thin-dashed' },
-  { from: 'd-canvas', to: 'cap-star', style: 'thin-dashed' },
 ]
